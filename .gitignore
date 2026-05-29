@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+
+# Node (Tailwind)
+node_modules/
+dist/
+.npm
+
+# Databases (Postgres files should NEVER be in git)
+postgres/
+
+# Logs & OS
+*.log
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
