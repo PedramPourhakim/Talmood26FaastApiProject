@@ -1,0 +1,25 @@
+ html, body {
+      width: 100%;
+      max-width: 100%;
+      overflow-x: clip; /* اگر Safari قدیمی داشتی، hidden بگذار */
+    }
+
+    body {
+      font-family: 'Vazirmatn', sans-serif;
+      background-color: #fdfdfe;
+    }
+
+    /* تا وقتی روی anchor می‌پری، زیر هدر نره */
+    [id] { scroll-margin-top: 5rem; }
+
+    /* شکستن متن/لینک‌های خیلی بلند که باعث overflow می‌شوند */
+    a, p, h1, h2, h3, h4, h5, h6, span, div {
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
+
+    /* رسانه‌ها بیرون نزنند */
+    img, svg, video, canvas {
+      max-width: 100%;
+      height: auto;
+    }

@@ -1,0 +1,207 @@
+{% extends "base.html" %}
+
+{% block title %}صفحه اصلی - محفل پاراشا{% endblock %}
+{% block head %}
+{% endblock %}
+
+{% block content %}
+<header class="bg-white/95 backdrop-blur-sm shadow-sm py-4 border-b border-blue-50 sticky top-0 z-50">
+    <div class="container mx-auto px-4 sm:px-6">
+        <div class="flex justify-between items-center">
+            <!-- لوگو -->
+            <div class="text-2xl font-bold text-blue-900">
+                تلمود 26
+            </div>
+
+            <!-- دکمه منو موبایل -->
+            <button id="mobile-menu-btn"
+                    class="md:hidden inline-flex items-center justify-center w-11 h-11 rounded-xl border border-blue-100 text-blue-900 hover:bg-blue-50 transition"
+                    aria-controls="mobile-menu"
+                    aria-expanded="false"
+                    type="button">
+                <svg id="menu-icon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+
+            <!-- منوی دسکتاپ -->
+            <nav class="hidden md:flex items-center gap-6">
+                <a href="#parasha-section" class="text-slate-700 hover:text-blue-600 transition">آخرین پاراشا</a>
+                <a href="#sedagha" class="text-slate-700 hover:text-blue-600 transition">پرداخت صداقا</a>
+                <a href="#rabanim" class="text-slate-700 hover:text-blue-600 transition">پرسش از ربانیم</a>
+                <a href="/admin" class="bg-blue-900 text-white px-4 py-2 rounded-lg hover:bg-blue-800 transition">
+                    ورود / ثبت‌نام
+                </a>
+            </nav>
+        </div>
+
+        <!-- منوی موبایل -->
+        <nav id="mobile-menu"
+             class="md:hidden mobile-menu mt-4 rounded-2xl border border-blue-100 bg-white shadow-lg overflow-hidden"
+             aria-label="Mobile menu">
+            <div class="flex flex-col p-3 space-y-2">
+                <a href="#parasha-section"
+                   class="py-3 px-4 rounded-xl text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition">
+                    آخرین پاراشا
+                </a>
+                <a href="#sedagha"
+                   class="py-3 px-4 rounded-xl text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition">
+                    پرداخت صداقا
+                </a>
+                <a href="#rabanim"
+                   class="py-3 px-4 rounded-xl text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition">
+                    پرسش از ربانیم
+                </a>
+                <a href="/admin"
+                   class="py-3 px-4 rounded-xl bg-blue-900 text-white text-center hover:bg-blue-800 transition">
+                    ورود / ثبت‌نام
+                </a>
+            </div>
+        </nav>
+
+    </div>
+</header>
+<!-- ۱. هدر انیمیشنی زنده و باریک -->
+<section class="max-w-5xl mx-auto my-5 ">
+    <div class="parasha-banner">
+        <!-- ذرات شناور تصادفی -->
+        <div class="particle" style="width:10px; height:10px; top:20%; left:10%; animation-delay: 0s;"></div>
+        <div class="particle" style="width:15px; height:15px; top:60%; left:85%; animation-delay: 1s;"></div>
+        <div class="particle" style="width:8px; height:8px; top:40%; left:20%; animation-delay: 2s;"></div>
+
+        <!-- ستاره طلایی -->
+        <div class="relative z-10 flex items-center justify-center">
+            <div class="magen-wrap">
+                <div class="magen-rotator">
+                    <svg class="magen-gold" viewBox="0 0 120 120" aria-hidden="true">
+                        <g fill="none" stroke-linejoin="round" stroke-width="6">
+                            <polygon points="60,10 15,88 105,88" stroke="#eab308"/>
+                            <polygon points="60,110 15,32 105,32" stroke="#eab308"/>
+                        </g>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- متن محو پشت ستاره -->
+        <div class="absolute inset-0 flex items-center justify-center opacity-[0.03] select-none pointer-events-none">
+            <span class="text-9xl font-black text-blue-900 uppercase">Talmood26</span>
+        </div>
+
+        <!-- موج انیمیشنی -->
+        <svg class="wave-bg" viewBox="0 0 1440 320" preserveAspectRatio="none">
+            <path d="M0,160L48,176C96,192,192,224,288,213.3C384,203,480,149,576,149.3C672,149,768,203,864,213.3C960,224,1056,192,1152,160C1248,128,1344,96,1392,80L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+        </svg>
+    </div>
+</section>
+<!-- بخش نمایش آخرین پاراشا (Hero Section) -->
+<section id="parasha-section" class="relative bg-blue-900 text-white overflow-hidden">
+    <!-- پس‌زمینه تزئینی (اختیاری) -->
+    <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+
+    <div class="container mx-auto px-6 py-16 lg:py-24 relative z-10">
+        <div class="flex flex-col lg:flex-row items-center">
+
+            <!-- بخش متن -->
+            <div class="lg:w-1/2 text-center lg:text-right mb-12 lg:mb-0">
+                <span class="bg-blue-700 text-blue-200 px-4 py-1 rounded-full text-sm font-semibold mb-4 inline-block">
+                    تازه ترین پاراشای هفته
+                </span>
+
+                {% if latest_parasha %}
+                <h1 class="text-4xl lg:text-6xl font-extrabold mb-6 leading-tight">
+                    {{ latest_parasha.title }}
+                </h1>
+                <p class="text-lg text-blue-100 mb-10 leading-relaxed max-w-xl">
+                    {{ latest_parasha.description[:80] }}...
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                    <a href="/parasha/{{ latest_parasha.id }}"
+                       class="bg-yellow-500 hover:bg-yellow-400 text-blue-900 font-bold py-3 px-8 rounded-lg transition duration-300 text-center">
+                        ادامه مطالعه
+                    </a>
+                    <a href="#"
+                       class="border border-white hover:bg-white hover:text-blue-900 font-bold py-3 px-8 rounded-lg transition duration-300 text-center">
+                        آرشیو پاراشاها
+                    </a>
+                </div>
+                {% else %}
+                <h1 class="text-4xl font-bold mb-6">در حال آماده‌سازی محتوا...</h1>
+                {% endif %}
+            </div>
+
+            <!-- بخش تصویر پاراشا -->
+            <div class="lg:w-1/2 flex justify-center">
+                <div class="relative">
+                    <!-- هاله نوری پشت عکس -->
+                    <div class="absolute -inset-4 bg-blue-500 rounded-full blur-2xl opacity-20 animate-pulse"></div>
+
+                    {% if latest_parasha and latest_parasha.image_path %}
+                    <img src="{{ latest_parasha.image_path }}" alt="{{ latest_parasha.title }}"
+                         class="relative w-80 h-80 lg:w-[450px] lg:h-[450px] object-cover rounded-2xl shadow-2xl border-4 border-blue-800 transform rotate-2 hover:rotate-0 transition duration-500">
+                    {% else %}
+                    <div class="relative w-80 h-80 bg-blue-800 rounded-2xl flex items-center justify-center border-4 border-dashed border-blue-700 text-blue-300">
+                        تصویری موجود نیست
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+<!-- بخش خدمات سریع -->
+<section class="py-20 bg-gray-50">
+    <div class="container mx-auto px-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+
+            <!-- کارت صداقا -->
+            <div id="sedagha"
+                 class="bg-white p-8 rounded-3xl shadow-xl shadow-blue-100 border border-blue-50 text-center hover:-translate-y-2 transition duration-300">
+                <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
+                         stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold text-blue-900 mb-4">پرداخت صداقا</h3>
+                <p class="text-gray-600 mb-6">با اهدای تبرعات خود، ما را در نشر معارف الهی یاری کنید.</p>
+                <a href="#" class="text-blue-600 font-bold hover:underline">پرداخت آنلاین ←</a>
+            </div>
+
+            <!-- کارت پرسش از ربانیم -->
+            <div id="rabanim"
+                 class="bg-white p-8 rounded-3xl shadow-xl shadow-blue-100 border border-blue-50 text-center hover:-translate-y-2 transition duration-300">
+                <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
+                         stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold text-blue-900 mb-4">پرسش از ربانیم</h3>
+                <p class="text-gray-600 mb-6">سوالات شرعی و معنوی خود را مستقیماً از اساتید بپرسید.</p>
+                <a href="#" class="text-blue-600 font-bold hover:underline">ارسال سوال ←</a>
+            </div>
+
+            <!-- کارت تقویم عبری -->
+            <div class="bg-white p-8 rounded-3xl shadow-xl shadow-blue-100 border border-blue-50 text-center hover:-translate-y-2 transition duration-300">
+                <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24"
+                         stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold text-blue-900 mb-4">زمان‌های شرعی</h3>
+                <p class="text-gray-600 mb-6">مشاهده تقویم و زمان‌های دقیق عبادی به افق شهرهای مختلف.</p>
+                <a href="#" class="text-blue-600 font-bold hover:underline">مشاهده تقویم ←</a>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+{% endblock %}
