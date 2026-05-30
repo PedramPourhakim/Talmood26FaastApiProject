@@ -1,17 +1,21 @@
 from core.database import Base
-from sqlalchemy import Column, String, DateTime, Integer, Boolean
+from sqlalchemy import Column, String, DateTime, Boolean
 from sqlalchemy.sql import func
+from sqlalchemy.orm import relationship
 import uuid
 
 class PersonModel(Base):
     __tablename__ = "person"
 
     id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
-    email = Column(String(255), nullable=False)
-    phone = Column(String(11), nullable=False)
+    name = Column(String(255))
+    family_name = Column(String(512))
     creation_date = Column(DateTime, nullable=False, default=func.now())
-    verification_code = Column(Integer, nullable=True)
     is_admin = Column(Boolean, nullable=False, default=False)
+    is_rabbie = Column(Boolean, nullable=True, default=False)
+    image_path = Column(String(255), nullable=True)
+    image_file = None
+    users = relationship("UserModel", backref="person")
 
     def __str__(self):
-        return f"{self.email} - {self.phone}"
+        return f"{self.name} - {self.family_name}"

@@ -38,6 +38,7 @@ if config.config_file_name is not None:
 
 from person.models import *
 from weeklyParashah.models import *
+from users.models import *
 
 target_metadata = Base.metadata
 

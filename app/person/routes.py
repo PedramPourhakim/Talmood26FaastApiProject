@@ -15,21 +15,8 @@ router = APIRouter(tags=["person"],prefix="/person")
 @router.get("/people",
             status_code=status.HTTP_200_OK,
             response_model=List[PersonResponseSchema])
-async def get_people(q1:str | None = Query(
-alias = "Search",
-description="Search people by their phone number",
-default=None,
-max_length=13
-),q2:EmailStr | None = Query(
-    alias = "Search",
-    description="Search people by their email",
-    default=None
-),db : Session = Depends(get_db)):
+async def get_people(db : Session = Depends(get_db)):
     query = db.query(PersonModel)
-    if q1:
-        query = query.filter_by(phone=q1)
-    elif q2:
-        query = query.filter_by(email=q2)
     get_all_query_result = query.all()
     return get_all_query_result
 

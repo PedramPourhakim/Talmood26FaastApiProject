@@ -6,6 +6,7 @@ from utils.exception_handler import (HttpExceptionHandler,
 from person.routes import router as person_router
 from weeklyParashah.routes import router as parasha_router
 from templates.rendering_pages import router as index_page_router
+from users.routes import router as users_router
 from sqladmin import Admin
 from core.database import engine
 from person.view import PersonAdmin
@@ -34,8 +35,9 @@ async def http_exception_handler(request, exc):
 async def request_validation_exception_handler(request, exc):
     return ValidationExceptionHandler().handle_exception(exc)
 
-# app.include_router(person_router)
-# app.include_router(parasha_router)
+app.include_router(person_router)
+app.include_router(parasha_router)
+app.include_router(users_router)
 app.include_router(index_page_router)
 
 

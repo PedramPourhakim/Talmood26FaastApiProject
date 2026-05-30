@@ -35,6 +35,17 @@ services:
       - ./redis-data:/data
     command: ["redis-server", "--save", "20", "1", "--loglevel", "warning"]
 
+  smtp4dev:
+      image: rnwood/smtp4dev:v3
+      restart: always
+      ports:
+        - '5000:80'
+        - '25:25'
+        - '143:143'
+        - '110:110'
+      volumes:
+        - smtp4dev-data:/smtp4dev
+
   backend_talmood26:
     build:
       context: .
@@ -57,8 +68,11 @@ services:
       - ./app:/usr/src/core
       - ./static:/usr/src/core/static
 
+volumes:
+  smtp4dev-data:
 # docker-compose up --build -d
 # docker exec -it backend_talmood26 bash (For running commands in docker terminal)
 # docker-compose exec backend_talmood26 alembic revision --autogenerate -m "add person table"
 # docker-compose exec backend_talmood26 alembic upgrade head
 # docker-compose up -d db_talmood26 redis_talmood26
+# docker exec -it db_talmood26 psql -U postgres -d postgres -c "TRUNCATE TABLE person RESTART IDENTITY CASCADE;"

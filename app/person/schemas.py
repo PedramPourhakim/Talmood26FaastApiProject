@@ -3,8 +3,10 @@ from pydantic import BaseModel, Field,EmailStr
 
 
 class BasePersonSchema(BaseModel):
-    email: str = EmailStr()
-    phone: str = Field(...,max_length=11)
+    name: str = Field(max_length=255)
+    family_name: str = Field(max_length=512)
+    is_admin: bool
+    is_rabbie : bool
 
 class CreatePersonSchema(BasePersonSchema):
     pass
@@ -12,8 +14,6 @@ class CreatePersonSchema(BasePersonSchema):
 class UpdatePersonSchema(BasePersonSchema):
     pass
 
-class LoginPersonSchema(BasePersonSchema):
-    verification_code : int = Field(...,max_length=4)
 
 class PersonResponseSchema(BasePersonSchema):
     id: str = Field(..., description="Unique identifier of the person")
