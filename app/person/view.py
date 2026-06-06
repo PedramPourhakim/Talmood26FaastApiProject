@@ -1,9 +1,9 @@
 from sqladmin import ModelView
 from person.models import PersonModel
 
-class PersonAdmin(ModelView, model=PersonModel):
+class PersonView(ModelView, model=PersonModel):
     name = "افراد"
-    name_plural = "کاربران"
+    name_plural = "اشخاص"
     icon = "fa-solid fa-user text-danger"
 
     column_list = ["name", "family_name", "is_admin","is_rabbie", "creation_date"]

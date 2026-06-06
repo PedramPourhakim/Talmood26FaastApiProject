@@ -1,0 +1,57 @@
+<header class="bg-white/95 backdrop-blur-sm shadow-sm py-4 border-b border-blue-50 sticky top-0 z-50">
+    <div class="container mx-auto px-4 sm:px-6">
+        <div class="flex justify-between items-center">
+            <!-- لوگو -->
+            <div class="text-2xl font-bold text-blue-900">
+                تلمود 26
+            </div>
+
+            <!-- دکمه منو موبایل -->
+            <button id="mobile-menu-btn"
+                    class="md:hidden inline-flex items-center justify-center w-11 h-11 rounded-xl border border-blue-100 text-blue-900 hover:bg-blue-50 transition"
+                    aria-controls="mobile-menu"
+                    aria-expanded="false"
+                    type="button">
+                <svg id="menu-icon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+
+            <!-- منوی دسکتاپ -->
+            <nav class="hidden md:flex items-center gap-6">
+                <a href="#parasha-section" class="text-slate-700 hover:text-blue-600 transition">آخرین پاراشا</a>
+                <a href="#sedagha" class="text-slate-700 hover:text-blue-600 transition">پرداخت صداقا</a>
+                <a href="#rabanim" class="text-slate-700 hover:text-blue-600 transition">پرسش از ربانیم</a>
+                <a href="#" class="open-auth-modal bg-blue-900 text-white px-4 py-2 rounded-lg hover:bg-blue-800 transition">
+                    ورود / ثبت‌نام
+                </a>
+            </nav>
+        </div>
+
+        <!-- منوی موبایل -->
+        <nav id="mobile-menu"
+             class="md:hidden mobile-menu mt-4 rounded-2xl border border-blue-100 bg-white shadow-lg overflow-hidden"
+             aria-label="Mobile menu">
+            <div class="flex flex-col p-3 space-y-2">
+                <a href="#parasha-section"
+                   class="py-3 px-4 rounded-xl text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition">
+                    آخرین پاراشا
+                </a>
+                <a href="#sedagha"
+                   class="py-3 px-4 rounded-xl text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition">
+                    پرداخت صداقا
+                </a>
+                <a href="#rabanim"
+                   class="py-3 px-4 rounded-xl text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition">
+                    پرسش از ربانیم
+                </a>
+                <a href="#"
+                   class="open-auth-modal py-3 px-4 rounded-xl bg-blue-900 text-white text-center hover:bg-blue-800 transition">
+                    ورود / ثبت‌نام
+                </a>
+            </div>
+        </nav>
+
+    </div>
+</header>

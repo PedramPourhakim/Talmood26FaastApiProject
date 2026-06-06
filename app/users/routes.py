@@ -1,8 +1,12 @@
+from sys import prefix
+
 from fastapi import (APIRouter,Depends,HTTPException,status,
                      Response,Path)
 from fastapi.responses import JSONResponse
 from sqlalchemy import or_
 from fastapi_cache.decorator import cache
+
+from core.config import settings
 from users.schemas import *
 from users.models import UserModel
 from sqlalchemy.orm import Session
@@ -16,8 +20,14 @@ decode_refresh_token
 import random
 from typing import List
 from utils.email_util import send_email
-
+from redis import asyncio as aioredis
+from fastapi_cache.backends.redis import RedisBackend
+from fastapi_cache import FastAPICache
 router = APIRouter(tags=["users"],prefix="/users")
+
+redis = aioredis.from_url(settings.REDIS_URL)
+cache_backend = RedisBackend(redis)
+FastAPICache.init(cache_backend,prefix="fastapi-cache")
 
 @cache(expire=30)
 @router.get("/",
@@ -41,15 +51,38 @@ async def first_step_login(request: UserLoginSchema,db: Session = Depends(get_db
     user_obj.verification_code = random.randint(1000,9999)
     db.commit()
     db.refresh(user_obj)
+    await redis.set(
+        f"login_code:{user_obj.email}",
+        user_obj.verification_code,
+        ex=300
+    )
     await send_email(
-        subject="Test mail from fastapi",
+        subject="Talmood26 Verification Code",
         recipients=[user_obj.email],
-        body=f"Your verification code for Talmood26 is {user_obj.verification_code}"
+        body=f"Your verification code is : {user_obj.verification_code}"
     )
     return JSONResponse({
         "status": status.HTTP_200_OK,
-        "data":"verification code has sent to your email"
+        "user_id":user_obj.id
     })
+@router.post("/verify/{user_id}")
+async def verify_code(request:VerificationCodeSchema,
+                      user_id:str=Path(...,description="Id of the user")):
+    stored_code = await redis.get(f"login_code:{request.email}")
+
+    if not stored_code or int(stored_code.decode()) != request.verification_code:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Invalid verification code"
+        )
+    await redis.delete(f"login_code:{request.email}")
+    return JSONResponse({
+        "status": status.HTTP_200_OK,
+        "access_token" : generate_access_token(user_id),
+        "refresh_token" : generate_refresh_token(user_id),
+    })
+
+
 
 @router.post("/register",status_code=status.HTTP_201_CREATED)
 async def register_user(request: UserRegisterSchema,db: Session = Depends(get_db)):

@@ -11,12 +11,12 @@ import os
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 
-BASE_DIR = Path(__file__).resolve().parent.parent
-ENV_PATH = BASE_DIR / ".env"
-if ENV_PATH.exists():
-    load_dotenv(dotenv_path=ENV_PATH)
-else:
-    print(f"Warning: .env file not found. falling back to global environment variables.")
+# BASE_DIR = Path(__file__).resolve().parent.parent
+# ENV_PATH = BASE_DIR / ".env"
+# if ENV_PATH.exists():
+#     load_dotenv(dotenv_path=ENV_PATH)
+# else:
+#     print(f"Warning: .env file not found. falling back to global environment variables.")
 
 DATABASE_URL = os.getenv("SQLALCHEMY_DATABASE_URL")
 config = context.config

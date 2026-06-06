@@ -58,7 +58,7 @@ services:
     environment:
       SQLALCHEMY_DATABASE_URL: postgresql://postgres:postgres@db_talmood26:5432/postgres
       JWT_SECRET_KEY: Testkjfejdfqwejd;qwekd;qwkd;qwekd;qwkd;qwkdjfjwefj
-      REDIS_URL: redis://redis:6379
+      REDIS_URL: redis://redis_talmood26:6379
       UPLOAD_DIR: /usr/src/core/static/parasha_images
       UPLOAD_URL_PREFIX: /static/parasha_images
     ports:

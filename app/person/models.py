@@ -12,7 +12,7 @@ class PersonModel(Base):
     family_name = Column(String(512))
     creation_date = Column(DateTime, nullable=False, default=func.now())
     is_admin = Column(Boolean, nullable=False, default=False)
-    is_rabbie = Column(Boolean, nullable=True, default=False)
+    is_rabbie = Column(Boolean, nullable=False, default=False)
     image_path = Column(String(255), nullable=True)
     image_file = None
     users = relationship("UserModel", backref="person")

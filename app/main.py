@@ -9,8 +9,9 @@ from templates.rendering_pages import router as index_page_router
 from users.routes import router as users_router
 from sqladmin import Admin
 from core.database import engine
-from person.view import PersonAdmin
+from person.view import PersonView
 from weeklyParashah.view import ParashaView
+from users.view import UserView
 from fastapi.staticfiles import StaticFiles
 import os
 # app = FastAPI(docs_url=None,
@@ -22,8 +23,9 @@ os.makedirs(UPLOAD_DIR, exist_ok=True)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 admin = Admin(app,engine)
-admin.add_view(PersonAdmin)
+admin.add_view(PersonView)
 admin.add_view(ParashaView)
+admin.add_view(UserView)
 
 # patch_fastapi(app,docs_url="/swagger")
 

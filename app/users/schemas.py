@@ -3,6 +3,8 @@ from datetime import datetime
 
 class UserLoginSchema(BaseModel):
     email :str= EmailStr
+
+class VerificationCodeSchema(UserLoginSchema):
     verification_code: int = Field(description="a Verification code that sent to user")
 
 class UserRegisterSchema(BaseModel):
