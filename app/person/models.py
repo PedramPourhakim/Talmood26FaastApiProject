@@ -15,7 +15,7 @@ class PersonModel(Base):
     is_rabbie = Column(Boolean, nullable=False, default=False)
     image_path = Column(String(255), nullable=True)
     image_file = None
-    users = relationship("UserModel", backref="person")
+    users = relationship("UserModel", back_populates="person")
 
     def __str__(self):
         return f"{self.name} - {self.family_name}"

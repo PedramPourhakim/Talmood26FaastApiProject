@@ -169,8 +169,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 throw new Error(data.detail || "login failed");
             }
 
-            userId = data.user_id;
-
             emailStep.classList.add("hidden");
             codeStep.classList.remove("hidden");
 
@@ -255,7 +253,6 @@ document.addEventListener("DOMContentLoaded", () => {
         if (verifying) return;
 
         const code = getCode();
-
         if (code.length !== 4) return;
 
         verifying = true;
@@ -263,7 +260,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         try {
 
-            const res = await fetch(`/users/verify/${userId}`, {
+            const res = await fetch(`/users/verify`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -271,17 +268,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 body: JSON.stringify({
                     email: userEmail,
                     verification_code: Number(code)
-                })
+                }),
+                credentials: "include"
             });
-
             const data = await res.json();
 
             if (!res.ok) {
                 throw new Error(data.detail || "invalid code");
             }
-
-            localStorage.setItem("access_token", data.access_token);
-            localStorage.setItem("refresh_token", data.refresh_token);
 
             window.location.reload();
 
@@ -294,7 +288,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         verifyBtn.disabled = false;
         verifying = false;
-
     }
 
 
@@ -382,4 +375,27 @@ function showCodeStep() {
     document.getElementById("step-code").classList.remove("hidden");
 
     document.querySelector(".otp-input").focus();
+}
+
+async function apiFetch(url, options = {}) {
+
+    let res = await fetch(url, {
+        ...options,
+        credentials: "include"
+    });
+
+    if (res.status === 401) {
+
+        await fetch("/users/refresh-token", {
+            method: "POST",
+            credentials: "include"
+        });
+
+        res = await fetch(url, {
+            ...options,
+            credentials: "include"
+        });
+    }
+
+    return res;
 }

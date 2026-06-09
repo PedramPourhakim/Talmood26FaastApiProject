@@ -3,6 +3,7 @@ from fastapi.exceptions import RequestValidationError
 from fastapi_swagger import patch_fastapi
 from utils.exception_handler import (HttpExceptionHandler,
                                      ValidationExceptionHandler)
+from utils.Auth_Middleware import RefreshTokenMiddleware
 from person.routes import router as person_router
 from weeklyParashah.routes import router as parasha_router
 from templates.rendering_pages import router as index_page_router
@@ -41,6 +42,8 @@ app.include_router(person_router)
 app.include_router(parasha_router)
 app.include_router(users_router)
 app.include_router(index_page_router)
+
+app.add_middleware(RefreshTokenMiddleware)
 
 
 

@@ -1,6 +1,7 @@
 from core.database import Base
 from sqlalchemy import Column, String, DateTime, Integer, ForeignKey
 from sqlalchemy.sql import func
+from sqlalchemy.orm import relationship
 import uuid
 
 
@@ -13,5 +14,6 @@ class UserModel(Base):
     verification_code = Column(Integer, nullable=True)
     creation_date = Column(DateTime, nullable=False, default=func.now())
     person_id = Column(String(36), ForeignKey('person.id'))
+    person= relationship("PersonModel", back_populates="users")
 
 
