@@ -23,6 +23,9 @@
                 <a href="#parasha-section" class="text-slate-700 hover:text-blue-600 transition">آخرین پاراشا</a>
                 <a href="#sedagha" class="text-slate-700 hover:text-blue-600 transition">پرداخت صداقا</a>
                 <a href="#rabanim" class="text-slate-700 hover:text-blue-600 transition">پرسش از ربانیم</a>
+                {% if current_user and current_user.is_admin == true %}
+                <a href="/admin" class="text-slate-700 hover:text-red-600 transition">پنل ادمین</a>
+                {% endif %}
                 {% if current_user %}
                 <a href="#" class="bg-blue-900 text-white px-4 py-2 rounded-lg">
                     {{ current_user.name }} {{ current_user.family_name }}
@@ -52,6 +55,9 @@
                    class="py-3 px-4 rounded-xl text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition">
                     پرسش از ربانیم
                 </a>
+                {% if current_user and current_user.is_admin == true %}
+                <a href="/admin" class="text-slate-700 hover:text-red-600 transition">پنل ادمین</a>
+                {% endif %}
                 {% if current_user %}
                 <a href="#" class="bg-blue-900 text-white px-4 py-2 rounded-lg">
                     {{ current_user.name }} {{ current_user.family_name }}

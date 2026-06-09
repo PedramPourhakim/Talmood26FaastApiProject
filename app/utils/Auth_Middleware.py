@@ -18,7 +18,12 @@ class RefreshTokenMiddleware(BaseHTTPMiddleware):
                 payload = decode_token(access_token)
 
                 if payload.get("type") == "access":
-                    current_user = payload
+                    current_user = {
+                        "user_id": payload["user_id"],
+                        "name": payload["name"],
+                        "family_name": payload["family_name"],
+                        "is_admin": payload["is_admin"],
+                    }
 
             except ExpiredSignatureError:
 
@@ -32,6 +37,7 @@ class RefreshTokenMiddleware(BaseHTTPMiddleware):
                                 "user_id": payload["user_id"],
                                 "name": payload["name"],
                                 "family_name": payload["family_name"],
+                                "is_admin": payload["is_admin"],
                             }
 
                             new_access_token = generate_access_token(

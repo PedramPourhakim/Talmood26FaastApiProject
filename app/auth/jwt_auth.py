@@ -18,6 +18,7 @@ def generate_access_token(
         "user_id": str(user_data["user_id"]),
         "name": user_data["name"],
         "family_name": user_data["family_name"],
+        "is_admin": user_data["is_admin"],
         "iat": int(now.timestamp()),
         "exp": int(
             (now + timedelta(seconds=expires_in)).timestamp()
@@ -42,6 +43,7 @@ def generate_refresh_token(
         "user_id": str(user_data["user_id"]),
         "name": user_data["name"],
         "family_name": user_data["family_name"],
+        "is_admin": user_data["is_admin"],
         "iat": int(now.timestamp()),
         "exp": int(
             (now + timedelta(seconds=expires_in)).timestamp()

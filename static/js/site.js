@@ -370,32 +370,5 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 
-function showCodeStep() {
-    document.getElementById("step-email").classList.add("hidden");
-    document.getElementById("step-code").classList.remove("hidden");
 
-    document.querySelector(".otp-input").focus();
-}
 
-async function apiFetch(url, options = {}) {
-
-    let res = await fetch(url, {
-        ...options,
-        credentials: "include"
-    });
-
-    if (res.status === 401) {
-
-        await fetch("/users/refresh-token", {
-            method: "POST",
-            credentials: "include"
-        });
-
-        res = await fetch(url, {
-            ...options,
-            credentials: "include"
-        });
-    }
-
-    return res;
-}
