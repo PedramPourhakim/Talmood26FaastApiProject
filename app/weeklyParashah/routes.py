@@ -123,21 +123,21 @@ async def delete_parasha(
     db.delete(parasha)
     db.commit()
 
-@router.get(
-    "/{parasha_id}",
-    status_code=status.HTTP_200_OK,
-    response_model=ResponseParashahSchema
-)
-async def get_one_parasha(
-    parasha_id: str = Path(..., description="Id of the parasha"),
-    db: Session = Depends(get_db)
-):
-    parasha = db.query(ParashaModel).filter_by(id=parasha_id).one_or_none()
-
-    if not parasha:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Parasha with id {parasha_id} not found"
-        )
-
-    return parasha
+# @router.get(
+#     "/{parasha_id}",
+#     status_code=status.HTTP_200_OK,
+#     response_model=ResponseParashahSchema
+# )
+# async def get_one_parasha(
+#     parasha_id: str = Path(..., description="Id of the parasha"),
+#     db: Session = Depends(get_db)
+# ):
+#     parasha = db.query(ParashaModel).filter_by(id=parasha_id).one_or_none()
+#
+#     if not parasha:
+#         raise HTTPException(
+#             status_code=status.HTTP_404_NOT_FOUND,
+#             detail=f"Parasha with id {parasha_id} not found"
+#         )
+#
+#     return parasha

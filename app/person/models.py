@@ -1,5 +1,6 @@
 from core.database import Base
 from sqlalchemy import Column, String, DateTime, Boolean
+from sqlalchemy_file import ImageField
 from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
 import uuid
@@ -11,10 +12,12 @@ class PersonModel(Base):
     name = Column(String(255))
     family_name = Column(String(512))
     creation_date = Column(DateTime, nullable=False, default=func.now())
-    is_admin = Column(Boolean, nullable=False, default=False)
-    is_rabbie = Column(Boolean, nullable=False, default=False)
-    image_path = Column(String(255), nullable=True)
-    image_file = None
+    is_admin = Column(Boolean, nullable=False, default=False,server_default='False')
+    is_rabbie = Column(Boolean, nullable=False, default=False,server_default='False')
+    image = Column(
+        ImageField(upload_storage="person_storage"),
+        nullable=True
+    )
     users = relationship("UserModel", back_populates="person")
 
     def __str__(self):

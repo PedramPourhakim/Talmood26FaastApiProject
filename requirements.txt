@@ -17,6 +17,10 @@ locust
 celery[redis]
 pydantic~=2.12.5
 SQLAlchemy~=2.0.48
+sqlalchemy-file[all]
+Pillow
+fasteners
+python-magic
 pydantic-settings~=2.13.1
 python-dotenv~=1.2.2
 dnspython~=2.8.0
@@ -59,5 +63,5 @@ python-multipart~=0.0.22
 pydantic-extra-types~=2.11.1
 pendulum~=3.2.0
 email_validator
-sqladmin
+sqladmin==0.26.0
 python-multipart

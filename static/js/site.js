@@ -103,6 +103,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const emailInput = document.getElementById("auth-email");
 
     const emailStep = document.getElementById("step-email");
+    const stepRegister = document.getElementById("step-register");
     const codeStep = document.getElementById("step-code");
 
     const sendBtn = document.getElementById("send-code-btn");
@@ -120,7 +121,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* ---------------- MODAL ---------------- */
+    document.getElementById("go-register").onclick = () => {
+        emailStep.classList.add("hidden");
+        stepRegister.classList.remove("hidden");
+    };
 
+    document.getElementById("back-login").onclick = () => {
+        stepRegister.classList.add("hidden");
+        emailStep.classList.remove("hidden");
+    };
     openBtns.forEach(btn => {
         btn.addEventListener("click", (e) => {
             e.preventDefault();
@@ -140,6 +149,72 @@ document.addEventListener("DOMContentLoaded", () => {
         modal.classList.remove("flex");
     }
 
+    document.getElementById("register-btn").onclick = async () => {
+        // گرفتن مقادیر از ورودی‌ها
+        const name = document.getElementById("reg-name").value;
+        const family = document.getElementById("reg-family").value;
+        const email = document.getElementById("reg-email").value;
+        const phone = document.getElementById("reg-phone").value;
+
+        // بررسی ساده برای خالی نبودن فیلدها (Client-side validation)
+        if (!name || !family || !email || !phone) {
+            alert("لطفاً تمامی فیلدها را پر کنید.");
+            return;
+        }
+
+        try {
+            // نمایش حالت بارگذاری (اختیاری)
+            const registerBtn = document.getElementById("register-btn");
+            registerBtn.disabled = true;
+            registerBtn.innerText = "در حال ثبت‌نام...";
+
+            // ارسال یک درخواست واحد برای ساخت Person و User با هم
+            const response = await fetch("/AddPersonRegisterUser", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({
+                    name: name,
+                    family_name: family,
+                    email: email,
+                    phone: phone,
+                    is_admin: false, // مقادیر پیش‌فرض
+                    is_rabbie: false
+                })
+            });
+
+            const result = await response.json();
+            console.log(result);
+            if (!response.ok) {
+                // استخراج پیام خطا از detail که در FastAPI تعریف کردیم
+                const errorMessage =
+                    result?.message ||
+                    result?.detail?.[0]?.msg ||
+                    result?.detail ||
+                    "خطا در ثبت‌نام";
+
+                throw new Error(errorMessage);
+            }
+
+            // اگر موفقیت‌آمیز بود
+            alert("ثبت نام با موفقیت انجام شد ✅");
+
+            // ۱. مخفی کردن فرم ثبت نام
+            document.getElementById("step-register").classList.add("hidden");
+            // ۲. نمایش فرم ایمیل (ورود)
+            document.getElementById("step-email").classList.remove("hidden");
+            // ۳. قرار دادن ایمیل ثبت‌نام شده در فیلد ورود برای راحتی کاربر
+            document.getElementById("auth-email").value = email;
+
+        } catch (error) {
+            console.error("Registration Error:", error);
+            alert(error.message);
+        } finally {
+            // فعال کردن مجدد دکمه
+            const registerBtn = document.getElementById("register-btn");
+            registerBtn.disabled = false;
+            registerBtn.innerText = "ثبت نام";
+        }
+    };
 
     /* ---------------- LOGIN STEP ---------------- */
 
@@ -370,5 +445,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 
+document.querySelectorAll(".logout-btn").forEach(btn => {
+    btn.addEventListener("click", async function (e) {
+        e.preventDefault();
 
+        if (!confirm("آیا مطمئن هستید که می‌خواهید خارج شوید؟"))
+            return;
+
+        await fetch("/logout", {
+            method: "POST",
+            credentials: "include"
+        });
+
+        window.location.reload();
+    });
+});
 

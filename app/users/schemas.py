@@ -10,7 +10,7 @@ class VerificationCodeSchema(UserLoginSchema):
 class UserRegisterSchema(BaseModel):
     email : str = EmailStr
     phone :str = Field(...,max_length=11,description="phone number of the user")
-    person_id : str = Field(...,max_length=36, description="person id of the user")
+    person_id : str = Field(max_length=36, description="person id of the user")
 
 class UserUpdateSchema(UserRegisterSchema):
     pass

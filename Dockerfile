@@ -22,7 +22,7 @@ WORKDIR /usr/src/core
 
 COPY ./requirements.txt .
 
-RUN pip install --no-cache-dir -i https://mirror-pypi.runflare.com/simple --upgrade -r ./requirements.txt
+RUN pip install --no-cache-dir --upgrade -r ./requirements.txt
 
 CMD ["fastapi","run","--host","0.0.0.0","--port","80"]
 

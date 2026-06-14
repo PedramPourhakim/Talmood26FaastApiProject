@@ -1,2 +1,27 @@
 @import "tailwindcss";
 @tailwind utilities;
+
+@layer components {
+  .input-style {
+    @apply block w-full rounded-2xl border-gray-300 bg-white px-4 py-3 text-gray-800 placeholder-gray-400 shadow-sm;
+    @apply transition duration-200;
+    @apply focus:border-red-500 focus:ring-2 focus:ring-red-200 focus:outline-none;
+    @apply hover:border-gray-400;
+  }
+
+  .input-label {
+    @apply mb-1 block text-sm font-medium text-gray-700;
+  }
+
+  .primary-btn {
+    @apply w-full rounded-xl bg-blue-900 py-3 text-white font-medium transition hover:bg-blue-800;
+  }
+
+  .secondary-btn {
+    @apply text-sm text-gray-500 transition hover:text-gray-700;
+  }
+
+  .field-group {
+    @apply flex flex-col gap-1;
+  }
+}

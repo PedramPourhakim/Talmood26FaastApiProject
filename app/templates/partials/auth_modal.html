@@ -4,104 +4,161 @@
             bg-black/40 backdrop-blur-sm
             flex items-center justify-center p-4">
 
-  <div class="bg-white w-full max-w-md
+    <div class="bg-white w-full max-w-md
               rounded-2xl shadow-xl
               p-8
               animate-modal">
 
-    <!-- HEADER -->
-    <div class="flex items-center justify-between mb-6">
+        <!-- HEADER -->
+        <div class="flex items-center justify-between mb-6">
 
-      <h2 class="text-xl font-semibold text-gray-800">
-        ورود به حساب
-      </h2>
+            <h2 class="text-xl font-semibold text-gray-800">
+                ورود / ثبت نام
+            </h2>
 
-      <button id="close-auth-modal"
-              class="w-9 h-9 flex items-center justify-center
+            <button id="close-auth-modal"
+                    class="w-9 h-9 flex items-center justify-center
                      rounded-full text-gray-400
                      hover:bg-gray-100 hover:text-gray-600
                      transition">
-        ✕
-      </button>
+                ✕
+            </button>
 
-    </div>
+        </div>
 
-    <form id="auth-form" class="relative">
+        <form id="auth-form" class="relative">
 
-      <!-- EMAIL STEP -->
-      <div id="step-email"
-           class="step active flex flex-col gap-5">
+            <!-- EMAIL STEP -->
+            <div id="step-email"
+                 class="step active flex flex-col gap-5">
 
-        <label for="auth-email"
-               class="text-sm text-gray-600">
-          ایمیل
-        </label>
+                <label for="auth-email"
+                       class="text-sm text-gray-600">
+                    ایمیل
+                </label>
 
-        <input type="email"
-       id="auth-email"
-       dir="ltr"
-       placeholder="example@email.com"
-       required
-       class="w-full border border-gray-300
+                <input type="email"
+                       id="auth-email"
+                       dir="ltr"
+                       placeholder="shemuel1226@gmail.com.com"
+                       required
+                       class="w-full border border-gray-300
               rounded-lg px-4 py-3 text-left
               focus:outline-none focus:ring-2
               focus:ring-blue-500">
 
-        <button type="submit"
-                id="send-code-btn"
-                class="w-full bg-blue-900 text-white
+                <button type="submit"
+                        id="send-code-btn"
+                        class="w-full bg-blue-900 text-white
                        py-3 rounded-lg font-semibold
                        hover:bg-blue-800 transition
                        cursor-pointer
                        disabled:opacity-50">
-          ارسال کد تایید
-        </button>
+                    ارسال کد تایید
+                </button>
+                <p class="text-sm text-gray-500 text-center">
+                    حساب ندارید؟
+                    <button type="button"
+                            id="go-register"
+                            class="text-blue-600 hover:underline
+                            cursor-pointer">
+                        ثبت نام
+                    </button>
+                </p>
 
-      </div>
+            </div>
+            <!-- REGISTER STEP -->
+            <div id="step-register" class="step hidden flex flex-col gap-5">
 
-      <!-- CODE STEP -->
-      <div id="step-code"
-           class="step hidden flex flex-col gap-6 items-center text-center">
+                <div class="field-group">
+                    <label for="reg-name" class="input-label">نام</label>
+                    <input id="reg-name"
+                           aria-label="name"
+                           placeholder="نام خود را وارد کنید"
+                           class="input-style">
+                </div>
 
-        <p class="text-sm text-gray-600">
-          کد ۴ رقمی ارسال شده را وارد کنید
-        </p>
+                <div class="field-group">
+                    <label for="reg-family" class="input-label">نام خانوادگی</label>
+                    <input id="reg-family"
+                           aria-label="family_name"
+                           placeholder="نام خانوادگی"
+                           class="input-style">
+                </div>
 
-        <!-- OTP -->
-        <div dir="ltr" class="flex gap-3">
+                <div class="field-group">
+                    <label for="reg-email" class="input-label">ایمیل</label>
+                    <input id="reg-email"
+                           aria-label="email"
+                           type="email"
+                           placeholder="shemuel1226@gmail.com"
+                           class="input-style">
+                </div>
 
-          <input class="otp-input" maxlength="1" inputmode="numeric" autocomplete="one-time-code">
-          <input class="otp-input" maxlength="1" inputmode="numeric">
-          <input class="otp-input" maxlength="1" inputmode="numeric">
-          <input class="otp-input" maxlength="1" inputmode="numeric">
+                <div class="field-group">
+                    <label for="reg-phone" class="input-label">شماره موبایل</label>
+                    <input id="reg-phone"
+                           aria-label="phone"
+                           placeholder="09100996938"
+                           class="input-style">
+                </div>
 
-        </div>
+                <button id="register-btn" type="button" class="primary-btn
+                cursor-pointer">
+                    ثبت نام
+                </button>
 
-        <!-- TIMER -->
-        <div class="text-sm text-gray-500">
-          <span id="timer"></span>
-        </div>
+                <button type="button" id="back-login" class="secondary-btn
+                    cursor-pointer">
+                    بازگشت به ورود
+                </button>
 
-        <!-- RESEND -->
-        <button type="button"
-                id="resend-code"
-                class="hidden text-sm text-blue-600 hover:underline cursor-pointer">
-          ارسال مجدد کد
-        </button>
+            </div>
 
-        <!-- VERIFY -->
-        <button type="button"
-                id="verify-btn"
-                class="w-full bg-green-600 text-white
+
+            <!-- CODE STEP -->
+            <div id="step-code"
+                 class="step hidden flex flex-col gap-6 items-center text-center">
+
+                <p class="text-sm text-gray-600">
+                    کد ۴ رقمی ارسال شده را وارد کنید
+                </p>
+
+                <!-- OTP -->
+                <div dir="ltr" class="flex gap-3">
+
+                    <input class="otp-input" maxlength="1" inputmode="numeric" autocomplete="one-time-code">
+                    <input class="otp-input" maxlength="1" inputmode="numeric">
+                    <input class="otp-input" maxlength="1" inputmode="numeric">
+                    <input class="otp-input" maxlength="1" inputmode="numeric">
+
+                </div>
+
+                <!-- TIMER -->
+                <div class="text-sm text-gray-500">
+                    <span id="timer"></span>
+                </div>
+
+                <!-- RESEND -->
+                <button type="button"
+                        id="resend-code"
+                        class="hidden text-sm text-blue-600 hover:underline cursor-pointer">
+                    ارسال مجدد کد
+                </button>
+
+                <!-- VERIFY -->
+                <button type="button"
+                        id="verify-btn"
+                        class="w-full bg-green-600 text-white
                        py-3 rounded-lg font-semibold
                        hover:bg-green-700 transition
                        cursor-pointer disabled:opacity-50">
-          تایید کد
-        </button>
+                    تایید کد
+                </button>
 
-      </div>
+            </div>
 
-    </form>
+        </form>
 
-  </div>
+    </div>
 </div>

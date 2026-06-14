@@ -3,7 +3,7 @@ from fastapi.exceptions import RequestValidationError
 from fastapi_swagger import patch_fastapi
 from utils.exception_handler import (HttpExceptionHandler,
                                      ValidationExceptionHandler)
-from utils.Auth_Middleware import RefreshTokenMiddleware
+from utils.Auth_Middleware import RefreshTokenMiddleware,AdminAuth,SwaggerMiddleware
 from person.routes import router as person_router
 from weeklyParashah.routes import router as parasha_router
 from templates.rendering_pages import router as index_page_router
@@ -14,16 +14,34 @@ from person.view import PersonView
 from weeklyParashah.view import ParashaView
 from users.view import UserView
 from fastapi.staticfiles import StaticFiles
+from sqlalchemy_file.storage import StorageManager
+from libcloud.storage.drivers.local import LocalStorageDriver
 import os
+from core.config import settings
 # app = FastAPI(docs_url=None,
 #     swagger_ui_oauth2_redirect_url=None)
+
+os.makedirs("static/person_images",exist_ok=True)
+os.makedirs("static/parasha_images",exist_ok=True)
+person_container = LocalStorageDriver("static").get_container("person_images")
+parasha_container = LocalStorageDriver("static").get_container("parasha_images")
+
+StorageManager.add_storage("person_storage", person_container)
+StorageManager.add_storage("parasha_storage", parasha_container)
+
+# اگر خواستی default هم داشته باشی (اختیاری)
+default_container = LocalStorageDriver("static").get_container(".")
+StorageManager.add_storage("default", default_container)
 app = FastAPI(docs_url="/swagger", redoc_url=None)
 UPLOAD_DIR = "static/parasha_images"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
-admin = Admin(app,engine)
+admin = Admin(app,engine,
+    authentication_backend=AdminAuth(
+        secret_key=settings.JWT_SECRET_KEY
+    ))
 admin.add_view(PersonView)
 admin.add_view(ParashaView)
 admin.add_view(UserView)
@@ -43,6 +61,7 @@ app.include_router(parasha_router)
 app.include_router(users_router)
 app.include_router(index_page_router)
 
+app.add_middleware(SwaggerMiddleware)
 app.add_middleware(RefreshTokenMiddleware)
 
 

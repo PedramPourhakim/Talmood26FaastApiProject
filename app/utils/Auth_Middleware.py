@@ -1,6 +1,10 @@
 from starlette.middleware.base import BaseHTTPMiddleware
 from jwt.exceptions import ExpiredSignatureError
 from auth.jwt_auth import generate_access_token, decode_token
+from sqladmin.authentication import AuthenticationBackend
+from starlette.requests import Request
+from fastapi.responses import JSONResponse
+from starlette.responses import RedirectResponse
 
 
 class RefreshTokenMiddleware(BaseHTTPMiddleware):
@@ -62,3 +66,53 @@ class RefreshTokenMiddleware(BaseHTTPMiddleware):
             )
 
         return response
+
+class AdminAuth(AuthenticationBackend):
+
+    def __init__(self, secret_key: str):
+        super().__init__(secret_key)
+
+    async def login(self, request: Request) -> bool:
+        return True
+
+    async def logout(self, request: Request) -> bool:
+        return True
+
+    async def authenticate(self, request: Request) -> bool:
+
+        current_user = getattr(request.state, "current_user", None)
+
+        if current_user is None:
+            return False
+
+        return current_user["is_admin"]
+
+class SwaggerMiddleware(BaseHTTPMiddleware):
+
+    async def dispatch(self, request, call_next):
+
+        protected_paths = [
+            "/swagger",
+            "/openapi.json"
+        ]
+
+        if request.url.path in protected_paths:
+
+            current_user = getattr(
+                request.state,
+                "current_user",
+                None
+            )
+
+            if (
+                current_user is None
+                or not current_user["is_admin"]
+            ):
+                return JSONResponse(
+                    {"detail": "Forbidden"},
+                    status_code=403
+                )
+
+        return await call_next(request)
+
+

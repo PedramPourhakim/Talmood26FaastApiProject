@@ -21,7 +21,7 @@ async def get_people(db : Session = Depends(get_db)):
     return get_all_query_result
 
 @router.post(
-    "/person",
+    "",
     status_code=status.HTTP_201_CREATED,
     response_model=PersonResponseSchema
 )
@@ -33,7 +33,7 @@ async def create_person(request: CreatePersonSchema, db: Session = Depends(get_d
     return new_person
 
 @router.put(
-    "/person/{person_id}",
+    "/{person_id}",
     response_model=PersonResponseSchema,
     status_code=status.HTTP_200_OK
 )
@@ -51,7 +51,7 @@ async def update_person(request: UpdatePersonSchema,
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"Person with id {person_id} not found")
 
-@router.delete("/person/{person_id}")
+@router.delete("/{person_id}")
 async def delete_person(
     person_id:str = Path(...,description="Id of the person"),
     db: Session = Depends(get_db)
@@ -68,7 +68,7 @@ async def delete_person(
 
 
 @router.get(
-    "/person/{person_id}",
+    "/{person_id}",
     response_model=PersonResponseSchema,
     status_code=status.HTTP_200_OK
 )
