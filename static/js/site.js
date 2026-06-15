@@ -452,12 +452,22 @@ document.querySelectorAll(".logout-btn").forEach(btn => {
         if (!confirm("آیا مطمئن هستید که می‌خواهید خارج شوید؟"))
             return;
 
-        await fetch("/logout", {
-            method: "POST",
-            credentials: "include"
-        });
+        try {
+            const res = await fetch("/logout", {
+                method: "POST",
+                credentials: "include"
+            });
 
-        window.location.reload();
+            if (!res.ok) {
+                alert("خطا در خروج از حساب");
+                return;
+            }
+
+            window.location.reload();
+        } catch (err) {
+            console.error(err);
+            alert("ارتباط با سرور برقرار نشد");
+        }
     });
 });
 

@@ -40,9 +40,9 @@
                     <!-- هاله نوری پشت عکس -->
                     <div class="absolute -inset-4 bg-blue-500 rounded-full blur-2xl opacity-20 animate-pulse"></div>
 
-                    {% if latest_parasha and latest_parasha.image_url %}
+                    {% if latest_parasha and latest_parasha %}
                     <img
-                            src="{{ latest_parasha.image_url }}"
+                            src="/{{ latest_parasha.image_url }}"
                             alt="{{ latest_parasha.title }}"
                             class="relative w-80 h-80 lg:w-[450px] lg:h-[450px] object-cover rounded-2xl shadow-2xl border-4 border-blue-800 transform rotate-2 hover:rotate-0 transition duration-500">
                     {% else %}

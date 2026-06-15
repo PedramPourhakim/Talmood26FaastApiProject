@@ -1,5 +1,7 @@
+import json
 from fastapi.templating import Jinja2Templates
 from fastapi import APIRouter,Request,Depends,HTTPException,status,Response
+from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 from core.database import get_db
 from weeklyParashah.models import ParashaModel
@@ -8,6 +10,10 @@ from person.models import PersonModel
 from users.models import UserModel
 from sqlalchemy import or_
 from pydantic import BaseModel,Field,EmailStr
+from redis import asyncio as aioredis
+from fastapi_cache.backends.redis import RedisBackend
+from fastapi_cache import FastAPICache
+from core.config import settings
 
 templates = Jinja2Templates(directory="templates")
 router = APIRouter(tags=["index_page"])
@@ -20,9 +26,37 @@ def inject_user(request: Request):
 
 templates.context_processors.append(inject_user)
 
+redis = aioredis.from_url(settings.REDIS_URL)
+cache_backend = RedisBackend(redis)
+FastAPICache.init(cache_backend,prefix="fastapi-cache")
+CACHE_KEY = "latest_parasha_landing_page"
 @router.get("/")
-async def get_landing_page(request: Request,db: Session = Depends(get_db)):
-    latest_parasha = db.query(ParashaModel).order_by(ParashaModel.creation_date.desc()).first()
+async def get_landing_page(request: Request, db: Session = Depends(get_db)):
+
+    cached = await redis.get(CACHE_KEY)
+
+    if cached:
+        latest_parasha = json.loads(cached)
+
+    else:
+        parasha = (
+            db.query(ParashaModel)
+            .order_by(ParashaModel.creation_date.desc())
+            .first()
+        )
+
+        latest_parasha = None
+        if parasha:
+            latest_parasha = {
+                "id": parasha.id,
+                "title": parasha.title,
+                "description": parasha.description,
+                "image_url": parasha.image["url"] if parasha.image else None,
+                "creation_date": parasha.creation_date.isoformat()
+            }
+
+        await redis.set(CACHE_KEY, json.dumps(latest_parasha), ex=3600)
+
     return templates.TemplateResponse(
         request=request,
         name="index.html",
@@ -110,7 +144,8 @@ async def add_person_register_user(request: AddPersonRegisterUserClass,
         )
 
 @router.post("/logout")
-async def logout(response: Response,request: Request):
-    response.delete_cookie(key="access_token")
-    response.delete_cookie(key="refresh_token")
-    request.state.current_user = None
+async def logout(request: Request):
+    response = JSONResponse({"message": "logged out"})
+    response.delete_cookie("access_token")
+    response.delete_cookie("refresh_token")
+    return response
