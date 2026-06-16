@@ -1,10 +1,18 @@
 from sqladmin import ModelView
 from weeklyParashah.models import ParashaModel
 from markupsafe import Markup
-
+from redis import asyncio as aioredis
+from core.config import settings
 from wtforms import FileField, TextAreaField
 from wtforms.validators import Optional, DataRequired
+import json
+from sqlalchemy.orm import Session
+from core.database import get_db
+from fastapi import Depends
 
+redis = aioredis.from_url(settings.REDIS_URL)
+
+CACHE_KEY = "latest_parasha_landing_page"
 
 class ParashaView(ModelView, model=ParashaModel):
 
@@ -25,10 +33,12 @@ class ParashaView(ModelView, model=ParashaModel):
 
     form_args = {
         "title": {
+            "label": "عنوان پاراشا",
             "validators": [DataRequired()]
         },
         "description": {
             "validators": [DataRequired()],
+            "label":"توضیحات پاراشا",
             "render_kw": {
                 "rows": 15,
                 "cols": 110,
@@ -62,3 +72,20 @@ class ParashaView(ModelView, model=ParashaModel):
     can_edit = True
     can_delete = True
     can_view_details = True
+
+    async def after_model_change(self, data, model, is_created, request,
+                                 db: Session = Depends(get_db)):
+        latest_parasha = (
+            db.query(ParashaModel)
+            .order_by(ParashaModel.creation_date.desc())
+            .first()
+        )
+
+        await redis.set(
+            CACHE_KEY,
+            json.dumps(latest_parasha),
+            ex=3600
+        )
+
+    async def after_model_delete(self, model, request):
+        await redis.delete(CACHE_KEY)

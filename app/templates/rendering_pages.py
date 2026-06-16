@@ -30,14 +30,16 @@ redis = aioredis.from_url(settings.REDIS_URL)
 cache_backend = RedisBackend(redis)
 FastAPICache.init(cache_backend,prefix="fastapi-cache")
 CACHE_KEY = "latest_parasha_landing_page"
+
+
 @router.get("/")
-async def get_landing_page(request: Request, db: Session = Depends(get_db)):
+async def get_landing_page(request: Request,
+                           db: Session = Depends(get_db)):
 
     cached = await redis.get(CACHE_KEY)
 
     if cached:
         latest_parasha = json.loads(cached)
-
     else:
         parasha = (
             db.query(ParashaModel)
@@ -46,6 +48,7 @@ async def get_landing_page(request: Request, db: Session = Depends(get_db)):
         )
 
         latest_parasha = None
+
         if parasha:
             latest_parasha = {
                 "id": parasha.id,
@@ -55,7 +58,11 @@ async def get_landing_page(request: Request, db: Session = Depends(get_db)):
                 "creation_date": parasha.creation_date.isoformat()
             }
 
-        await redis.set(CACHE_KEY, json.dumps(latest_parasha), ex=3600)
+        await redis.set(
+            CACHE_KEY,
+            json.dumps(latest_parasha),
+            ex=3600
+        )
 
     return templates.TemplateResponse(
         request=request,
