@@ -63,6 +63,7 @@ async def first_step_login(request: UserLoginSchema,db: Session = Depends(get_db
             "name":user_obj.person.name,
             "family_name":user_obj.person.family_name,
             "is_admin":user_obj.person.is_admin,
+            "is_rabbie":user_obj.person.is_rabbie,
         }),
         ex=300
     )
@@ -95,7 +96,8 @@ async def verify_code(request:VerificationCodeSchema,
     refresh_token = generate_refresh_token(data)
     response = JSONResponse({
         "status": status.HTTP_200_OK,
-        "detail": "User Logged in successfully"
+        "access_token": access_token,
+        "refresh_token": refresh_token
     })
     response.set_cookie(
             key="access_token",

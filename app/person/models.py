@@ -19,17 +19,17 @@ class PersonModel(Base):
         nullable=True
     )
     users = relationship("UserModel",back_populates="person")
-    # asked_questions = relationship(
-    #     "QAModel",
-    #     foreign_keys="QAModel.talmid_id",
-    #     back_populates="talmid"
-    # )
-    #
-    # answered_questions = relationship(
-    #     "QAModel",
-    #     foreign_keys="QAModel.rabbie_id",
-    #     back_populates="rabbie"
-    # )
+    asked_questions = relationship(
+        "QAModel",
+        foreign_keys="QAModel.talmid_id",
+        back_populates="talmid"
+    )
+
+    answered_questions = relationship(
+        "QAModel",
+        foreign_keys="QAModel.rabbie_id",
+        back_populates="rabbie"
+    )
 
     def __str__(self):
         return f"{self.name} - {self.family_name}"

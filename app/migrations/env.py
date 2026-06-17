@@ -1,5 +1,4 @@
 from logging.config import fileConfig
-
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 from core.database import Base
@@ -39,6 +38,7 @@ if config.config_file_name is not None:
 from person.models import *
 from weeklyParashah.models import *
 from users.models import *
+from qa.models import *
 
 target_metadata = Base.metadata
 

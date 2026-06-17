@@ -4,7 +4,6 @@ from auth.jwt_auth import generate_access_token, decode_token
 from sqladmin.authentication import AuthenticationBackend
 from starlette.requests import Request
 from fastapi.responses import JSONResponse
-from starlette.responses import RedirectResponse
 
 
 class RefreshTokenMiddleware(BaseHTTPMiddleware):
@@ -27,29 +26,26 @@ class RefreshTokenMiddleware(BaseHTTPMiddleware):
                         "name": payload["name"],
                         "family_name": payload["family_name"],
                         "is_admin": payload["is_admin"],
+                        "is_rabbie": payload["is_rabbie"],
+                    }
+            except ExpiredSignatureError:
+                pass
+        if refresh_token:
+            try:
+                payload = decode_token(refresh_token)
+
+                if payload.get("type") == "refresh":
+                    current_user = {
+                        "user_id": payload["user_id"],
+                        "name": payload["name"],
+                        "family_name": payload["family_name"],
+                        "is_admin": payload["is_admin"],
+                        "is_rabbie": payload["is_rabbie"],
                     }
 
-            except ExpiredSignatureError:
-
-                if refresh_token:
-                    try:
-                        payload = decode_token(refresh_token)
-
-                        if payload.get("type") == "refresh":
-
-                            current_user = {
-                                "user_id": payload["user_id"],
-                                "name": payload["name"],
-                                "family_name": payload["family_name"],
-                                "is_admin": payload["is_admin"],
-                            }
-
-                            new_access_token = generate_access_token(
-                                current_user
-                            )
-
-                    except Exception:
-                        pass
+                    new_access_token = generate_access_token(current_user)
+            except Exception as e:
+                print(e)
 
         request.state.current_user = current_user
 

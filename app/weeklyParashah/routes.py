@@ -59,7 +59,7 @@ async def create_parasha(
         description=description,
     )
 
-    new_parashah.image_path = save_file(image)
+    new_parashah.image_path = save_file("parasha_images",image)
 
     db.add(new_parashah)
     db.commit()
@@ -95,7 +95,7 @@ async def update_parasha(
 
     if image and getattr(image, "filename", "").strip():
         delete_old_image(parasha.image_path)
-        parasha.image_path = save_file(image)
+        parasha.image_path = save_file("parasha_images",image)
 
     db.commit()
     db.refresh(parasha)
@@ -118,7 +118,7 @@ async def delete_parasha(
             detail=f"Parasha with id {parasha_id} not found"
         )
 
-    delete_old_image(parasha.image_path)
+    delete_old_image(parasha.image)
 
     db.delete(parasha)
     db.commit()

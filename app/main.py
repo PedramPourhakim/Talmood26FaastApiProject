@@ -8,6 +8,7 @@ from person.routes import router as person_router
 from weeklyParashah.routes import router as parasha_router
 from templates.rendering_pages import router as index_page_router
 from users.routes import router as users_router
+from qa.routes import router as qa_router
 from sqladmin import Admin
 from core.database import engine
 from person.view import PersonView
@@ -18,6 +19,9 @@ from sqlalchemy_file.storage import StorageManager
 from libcloud.storage.drivers.local import LocalStorageDriver
 import os
 from core.config import settings
+from fastapi_cache import FastAPICache
+from fastapi_cache.backends.redis import RedisBackend
+from redis import asyncio as aioredis
 # app = FastAPI(docs_url=None,
 #     swagger_ui_oauth2_redirect_url=None)
 
@@ -61,10 +65,15 @@ async def request_validation_exception_handler(request, exc):
 app.include_router(person_router)
 app.include_router(parasha_router)
 app.include_router(users_router)
+app.include_router(qa_router)
 app.include_router(index_page_router)
 
 app.add_middleware(SwaggerMiddleware)
 app.add_middleware(RefreshTokenMiddleware)
+
+redis = aioredis.from_url(settings.REDIS_URL)
+cache_backend = RedisBackend(redis)
+FastAPICache.init(cache_backend,prefix="fastapi-cache")
 
 
 
