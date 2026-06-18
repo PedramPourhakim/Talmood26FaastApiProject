@@ -61,7 +61,7 @@ async def get_landing_page(request: Request,
         await redis.set(
             CACHE_KEY,
             json.dumps(latest_parasha),
-            ex=3600
+            ex=3600 * 24 * 7
         )
 
     return templates.TemplateResponse(

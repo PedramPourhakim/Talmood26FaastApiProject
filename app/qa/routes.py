@@ -80,7 +80,8 @@ async def create_question_answer(request: CreateQASchema,
 )
 async def update_qa(request: UpdateQASchema,
                     qa_id: str = Path(..., description="Id of the QA"),
-                    db: Session = Depends(get_db)):
+                    db: Session = Depends(get_db),
+                    user: dict = Depends(get_authenticated_user)):
     qa = db.query(QAModel).filter_by(id=qa_id).one_or_none()
     if qa:
         qa.question = request.question

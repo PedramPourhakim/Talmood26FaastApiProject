@@ -1,6 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.exceptions import RequestValidationError
 from fastapi_swagger import patch_fastapi
+from qa.view import QAView
 from utils.exception_handler import (HttpExceptionHandler,
                                      ValidationExceptionHandler)
 from utils.Auth_Middleware import RefreshTokenMiddleware,AdminAuth,SwaggerMiddleware
@@ -51,6 +52,7 @@ admin = Admin(app,engine,
 admin.add_view(PersonView)
 admin.add_view(ParashaView)
 admin.add_view(UserView)
+admin.add_view(QAView)
 
 # patch_fastapi(app,docs_url="/swagger")
 

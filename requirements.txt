@@ -65,3 +65,4 @@ pendulum~=3.2.0
 email_validator
 sqladmin==0.26.0
 python-multipart
+wtforms_sqlalchemy
