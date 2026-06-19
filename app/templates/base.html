@@ -1,17 +1,23 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}تلمود 26{% endblock %}</title>
-<!--    <script src="https://cdn.tailwindcss.com"></script>-->
+    <!--    <script src="https://cdn.tailwindcss.com"></script>-->
     <link rel="stylesheet" href="{{ url_for('static', path='css/tailwind.css') }}">
+
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet"
           type="text/css"/>
     <link rel="stylesheet" href="{{ url_for('static', path='css/site.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', path='css/index.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', path='css/output.css') }}">
     <script defer src="{{ url_for('static', path='js/site.js') }}"></script>
+<!--    <link rel="stylesheet"-->
+<!--      href="{{ url_for('static', path='dist/main.css') }}">-->
+
+<script type="module"
+        src="{{ url_for('static', path='dist/main.js') }}">
+</script>
     {% block head %}{% endblock %}
 </head>
 <body class="bg-gray-50 text-slate-800">
@@ -21,8 +27,8 @@
 
 <footer class="bg-blue-900 text-white py-8 mt-20">
     <div class="container mx-auto px-6 text-center">
-        <p>Full Stack Design And Developed By : <strong style="color: red">Pedram Pourhakim</strong></p>
+        <p>Powered By :<strong style="color: red"> Iran-Chabad </strong>
+        <p>Developed By : <strong style="color: red">Pedram Pourhakim</strong></p>
     </div>
 </footer>
 </body>
-</html>

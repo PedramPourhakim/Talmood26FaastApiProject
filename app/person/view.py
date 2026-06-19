@@ -18,12 +18,6 @@ class PersonView(ModelView, model=PersonModel):
         "image": FileField,  # ImageField رو به FileField تبدیل کن
     }
 
-    form_args = {
-        "image": {
-            "label": "تصویر پروفایل",
-            "validators": [Optional()]
-        }
-    }
     column_formatters = {
         "image": lambda m, a: Markup(
             f'<img src="/static/person_images/{m.image.path.split("/")[-1]}" '

@@ -8,6 +8,7 @@
     body {
       font-family: 'Vazirmatn', sans-serif;
       background-color: #fdfdfe;
+        direction: rtl;
     }
 
     /* تا وقتی روی anchor می‌پری، زیر هدر نره */

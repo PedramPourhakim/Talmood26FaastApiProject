@@ -1,176 +1,222 @@
 .parasha-banner {
-        position: relative;
-        width: 100%;
-        height: 180px; /* ارتفاع کمتر برای اشغال فضای کمتر */
-        overflow: visible;
-        border-radius: 2rem;
-        background: radial-gradient(circle at center, #ffffff 0%, #f0f7ff 100%);
-        border: 1px solid #e2e8f0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
-    }
+    position: relative;
+    width: 100%;
+    height: 180px; /* ارتفاع کمتر برای اشغال فضای کمتر */
+    overflow: visible;
+    border-radius: 2rem;
+    background: radial-gradient(circle at center, #ffffff 0%, #f0f7ff 100%);
+    border: 1px solid #e2e8f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+}
 
-    .magen-wrap {
-        position: relative;
-        width: 180px;
-        height: 180px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+.magen-wrap {
+    position: relative;
+    width: 180px;
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-        /* لایه‌بندی پایدار */
-        isolation: isolate;
-    }
+    /* لایه‌بندی پایدار */
+    isolation: isolate;
+}
 
-    /* هاله‌ی ثابت (نمی‌چرخد) */
-    .magen-wrap::before {
-        content: "";
-        position: absolute;
-        inset: 14px;
-        border-radius: 999px;
+/* هاله‌ی ثابت (نمی‌چرخد) */
+.magen-wrap::before {
+    content: "";
+    position: absolute;
+    inset: 14px;
+    border-radius: 999px;
 
-        background: radial-gradient(circle,
-        rgba(234, 179, 8, .35) 0%,
-        rgba(234, 179, 8, .18) 35%,
-        rgba(234, 179, 8, 0) 70%
-        );
+    background: radial-gradient(circle,
+    rgba(234, 179, 8, .35) 0%,
+    rgba(234, 179, 8, .18) 35%,
+    rgba(234, 179, 8, 0) 70%
+    );
 
-        /* blur روی یک لایه ثابت بهتر از drop-shadow روی SVG متحرک است */
-        filter: blur(10px);
-        z-index: 0;
-    }
+    /* blur روی یک لایه ثابت بهتر از drop-shadow روی SVG متحرک است */
+    filter: blur(10px);
+    z-index: 0;
+}
 
-    /* فقط rotate */
-    .magen-rotator {
-        position: relative;
-        z-index: 1;
+/* فقط rotate */
+.magen-rotator {
+    position: relative;
+    z-index: 1;
 
-        width: 180px;
-        height: 180px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+    width: 180px;
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-        transform-origin: 50% 50%;
-        will-change: transform;
-        transform: translate3d(0, 0, 0);
-        backface-visibility: hidden;
-        -webkit-backface-visibility: hidden;
+    transform-origin: 50% 50%;
+    will-change: transform;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
 
-        animation: starRotate 20s linear infinite;
-    }
+    animation: starRotate 20s linear infinite;
+}
 
-    /* خود svg: فقط pulse خیلی سبک */
+/* خود svg: فقط pulse خیلی سبک */
+.magen-gold {
+    width: 180px;
+    height: 180px;
+
+    will-change: transform, opacity;
+    transform: translate3d(0, 0, 0);
+    transform-origin: 50% 50%;
+
+    /*animation: starPulse 3.8s ease-in-out infinite;*/
+}
+
+/* نکته مهم: stroke ثابت‌تر */
+.magen-gold polygon {
+    vector-effect: non-scaling-stroke; /* کمک می‌کند stroke هنگام scale کمتر “شناور” شود */
+    shape-rendering: geometricPrecision;
+}
+
+@media (max-width: 480px) {
+    .magen-wrap,
+    .magen-rotator,
     .magen-gold {
-        width: 180px;
-        height: 180px;
-
-        will-change: transform, opacity;
-        transform: translate3d(0, 0, 0);
-        transform-origin: 50% 50%;
-
-        /*animation: starPulse 3.8s ease-in-out infinite;*/
+        width: 140px;
+        height: 140px;
     }
+}
 
-    /* نکته مهم: stroke ثابت‌تر */
-    .magen-gold polygon {
-        vector-effect: non-scaling-stroke; /* کمک می‌کند stroke هنگام scale کمتر “شناور” شود */
-        shape-rendering: geometricPrecision;
+@keyframes starRotate {
+    from {
+        transform: translate3d(0, 0, 0) rotate(0deg);
     }
-
-    @media (max-width: 480px) {
-        .magen-wrap,
-        .magen-rotator,
-        .magen-gold {
-            width: 140px;
-            height: 140px;
-        }
+    to {
+        transform: translate3d(0, 0, 0) rotate(360deg);
     }
+}
 
-    @keyframes starRotate {
-        from {
-            transform: translate3d(0, 0, 0) rotate(0deg);
-        }
-        to {
-            transform: translate3d(0, 0, 0) rotate(360deg);
-        }
+@keyframes starPulse {
+    0%, 100% {
+        opacity: .92;
+        transform: translate3d(0, 0, 0) scale(1);
     }
-
-    @keyframes starPulse {
-        0%, 100% {
-            opacity: .92;
-            transform: translate3d(0, 0, 0) scale(1);
-        }
-        50% {
-            opacity: 1;
-            transform: translate3d(0, 0, 0) scale(1.02);
-        }
-    }
-
-    /* ذرات شناور برای روح بخشیدن به فضا */
-    .particle {
-        position: absolute;
-        background: rgba(59, 130, 246, 0.2);
-        border-radius: 50%;
-        pointer-events: none;
-        animation: float 6s infinite ease-in-out;
-    }
-
-    @keyframes float {
-        0%, 100% {
-            transform: translateY(0) translateX(0);
-            opacity: 0;
-        }
-        50% {
-            transform: translateY(-40px) translateX(20px);
-            opacity: 0.6;
-        }
-    }
-
-    /* موج نرم ته کادر */
-    .wave-bg {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 60px;
-        fill: rgba(59, 130, 246, 0.05);
-        animation: waveMove 10s infinite linear;
-    }
-
-    @keyframes waveMove {
-        from {
-            transform: translateX(-50%);
-        }
-        to {
-            transform: translateX(0);
-        }
-    }
-
-    /* حالت بسته */
-    .mobile-menu {
-        height: 0;
-        opacity: 0;
-        transform: translateY(-8px);
-        overflow: hidden;
-
-        pointer-events: none; /* وقتی بسته است، کلیک نگیرد */
-        transition: height 320ms ease, opacity 200ms ease, transform 320ms ease;
-        will-change: height, opacity, transform;
-    }
-
-    /* حالت باز */
-    .mobile-menu.is-open {
+    50% {
         opacity: 1;
-        transform: translateY(0);
-        pointer-events: auto;
+        transform: translate3d(0, 0, 0) scale(1.02);
     }
+}
 
-    /* برای دسترسی‌پذیری: اگر کاربر reduce motion دارد */
-    @media (prefers-reduced-motion: reduce) {
-        .mobile-menu {
-            transition: none;
-        }
+/* ذرات شناور برای روح بخشیدن به فضا */
+.particle {
+    position: absolute;
+    background: rgba(59, 130, 246, 0.2);
+    border-radius: 50%;
+    pointer-events: none;
+    animation: float 6s infinite ease-in-out;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0) translateX(0);
+        opacity: 0;
     }
+    50% {
+        transform: translateY(-40px) translateX(20px);
+        opacity: 0.6;
+    }
+}
+
+/* موج نرم ته کادر */
+.wave-bg {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    fill: rgba(59, 130, 246, 0.05);
+    animation: waveMove 10s infinite linear;
+}
+
+@keyframes waveMove {
+    from {
+        transform: translateX(-50%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+/* حالت بسته */
+.mobile-menu {
+    height: 0;
+    opacity: 0;
+    transform: translateY(-8px);
+    overflow: hidden;
+
+    pointer-events: none; /* وقتی بسته است، کلیک نگیرد */
+    transition: height 320ms ease, opacity 200ms ease, transform 320ms ease;
+    will-change: height, opacity, transform;
+}
+
+/* حالت باز */
+.mobile-menu.is-open {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+/* برای دسترسی‌پذیری: اگر کاربر reduce motion دارد */
+@media (prefers-reduced-motion: reduce) {
+    .mobile-menu {
+        transition: none;
+    }
+}
+
+
+
+@keyframes pulse {
+    0% {
+        opacity: 1
+    }
+    50% {
+        opacity: .4
+    }
+    100% {
+        opacity: 1
+    }
+}
+#rabbi-carousel {
+    align-items: center;
+}
+
+.rabbi-card {
+    width: 80%;
+}
+
+@media (min-width: 768px) {
+    .rabbi-card {
+        width: 60%;
+    }
+}
+
+.embla {
+    overflow: hidden;
+    width: 100%;
+}
+
+.embla__container {
+    display: flex;
+}
+
+.embla__slide {
+    flex: 0 0 100%;
+}
+.rabbie_image{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}

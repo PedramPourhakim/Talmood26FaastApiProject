@@ -1,5 +1,5 @@
 from core.database import Base
-from sqlalchemy import Column, String, DateTime
+from sqlalchemy import Column, String, DateTime,Text
 from sqlalchemy.sql import func
 from sqlalchemy_file import ImageField
 import uuid
@@ -10,7 +10,7 @@ class ParashaModel(Base):
 
     id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     title = Column(String(255), nullable=False)
-    description = Column(String(), nullable=False)
+    description = Column(Text, nullable=False)
     creation_date = Column(DateTime, nullable=False, default=func.now())
 
     # ImageField با sqlalchemy-file

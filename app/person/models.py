@@ -4,6 +4,7 @@ from sqlalchemy_file import ImageField
 from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
 import uuid
+from sqlalchemy import false
 
 class PersonModel(Base):
     __tablename__ = "person"
@@ -12,8 +13,8 @@ class PersonModel(Base):
     name = Column(String(255))
     family_name = Column(String(512))
     creation_date = Column(DateTime, nullable=False, default=func.now())
-    is_admin = Column(Boolean, nullable=False, default=False,server_default='False')
-    is_rabbie = Column(Boolean, nullable=False, default=False,server_default='False')
+    is_admin = Column(Boolean, nullable=False,default=False,server_default=false())
+    is_rabbie = Column(Boolean, nullable=False,default=False,server_default=false())
     image = Column(
         ImageField(upload_storage="person_storage"),
         nullable=True

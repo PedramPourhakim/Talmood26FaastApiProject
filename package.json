@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "tailwindcss -i ./static/css/input.css -o ./static/css/output.css --watch"
+    "tailwind": "tailwindcss -i ./static/css/input.css -o ./static/css/output.css --watch",
+    "vite": "vite",
+    "build": "vite build",
+    "dev": "concurrently \"npm run tailwind\" \"npm run vite\""
   },
   "keywords": [],
   "author": "",
@@ -11,9 +14,14 @@
   "description": "",
   "devDependencies": {
     "@tailwindcss/cli": "^4.3.0",
-    "tailwindcss": "^4.3.0"
+    "concurrently": "^9.2.3",
+    "tailwindcss": "^4.3.0",
+    "vite": "^6.4.3"
   },
   "dependencies": {
-    "@tailwindcss/forms": "^0.5.11"
+    "@tailwindcss/forms": "^0.5.11",
+    "embla-carousel": "^8.6.0",
+    "embla-carousel-autoplay": "^8.6.0",
+    "swiper": "^12.2.0"
   }
 }

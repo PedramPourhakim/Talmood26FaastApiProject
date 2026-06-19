@@ -1,10 +1,11 @@
 from datetime import datetime
-from pydantic import BaseModel, Field,EmailStr
+from pydantic import BaseModel, Field,FilePath
 
 
 class BasePersonSchema(BaseModel):
     name: str = Field(max_length=255)
     family_name: str = Field(max_length=512)
+    image : str | None = None
     is_admin: bool
     is_rabbie : bool
 
