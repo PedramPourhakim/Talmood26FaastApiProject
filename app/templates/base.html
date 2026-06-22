@@ -11,12 +11,18 @@
     <link rel="stylesheet" href="{{ url_for('static', path='css/site.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', path='css/index.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', path='css/output.css') }}">
-    <script defer src="{{ url_for('static', path='js/site.js') }}"></script>
+<!--    <script defer src="{{ url_for('static', path='js/tabs.js') }}"></script>-->
 <!--    <link rel="stylesheet"-->
 <!--      href="{{ url_for('static', path='dist/main.css') }}">-->
 
 <script type="module"
         src="{{ url_for('static', path='dist/main.js') }}">
+</script>
+    <link rel="icon"
+      type="image/png"
+      href="{{ url_for('static', path='general_images/favicon.png') }}">
+<script>
+    window.currentUser = JSON.parse('{{ current_user | tojson | safe }}');
 </script>
     {% block head %}{% endblock %}
 </head>

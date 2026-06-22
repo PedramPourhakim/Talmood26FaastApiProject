@@ -10,12 +10,15 @@ class RefreshTokenMiddleware(BaseHTTPMiddleware):
 
     async def dispatch(self, request, call_next):
 
+        if request.url.path == "/logout":
+            return await call_next(request)
+
         access_token = request.cookies.get("access_token")
         refresh_token = request.cookies.get("refresh_token")
 
         new_access_token = None
         current_user = None
-
+        access_token_expired = False
         if access_token:
             try:
                 payload = decode_token(access_token)
@@ -23,20 +26,22 @@ class RefreshTokenMiddleware(BaseHTTPMiddleware):
                 if payload.get("type") == "access":
                     current_user = {
                         "user_id": payload["user_id"],
+                        "person_id": payload["person_id"],
                         "name": payload["name"],
                         "family_name": payload["family_name"],
                         "is_admin": payload["is_admin"],
                         "is_rabbie": payload["is_rabbie"],
                     }
             except ExpiredSignatureError:
-                pass
-        if refresh_token:
+                access_token_expired = True
+        if access_token_expired and refresh_token:
             try:
                 payload = decode_token(refresh_token)
 
                 if payload.get("type") == "refresh":
                     current_user = {
                         "user_id": payload["user_id"],
+                        "person_id": payload["person_id"],
                         "name": payload["name"],
                         "family_name": payload["family_name"],
                         "is_admin": payload["is_admin"],

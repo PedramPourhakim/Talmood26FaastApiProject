@@ -1,3 +1,6 @@
+import Swal from 'sweetalert2';
+
+
 const menuBtn = document.getElementById('mobile-menu-btn');
 const mobileMenu = document.getElementById('mobile-menu');
 const menuIcon = document.getElementById('menu-icon');
@@ -447,26 +450,49 @@ document.addEventListener("DOMContentLoaded", () => {
 
 document.querySelectorAll(".logout-btn").forEach(btn => {
     btn.addEventListener("click", async function (e) {
+
         e.preventDefault();
 
-        if (!confirm("آیا مطمئن هستید که می‌خواهید خارج شوید؟"))
+        const result = await Swal.fire({
+            title: "خروج از حساب",
+            text: "آیا مطمئن هستید که می‌خواهید خارج شوید؟",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonText: "بله",
+            cancelButtonText: "انصراف",
+            reverseButtons: true
+        });
+
+        if (!result.isConfirmed)
             return;
 
         try {
+
             const res = await fetch("/logout", {
                 method: "POST",
                 credentials: "include"
             });
 
             if (!res.ok) {
-                alert("خطا در خروج از حساب");
+                await Swal.fire(
+                    "خطا",
+                    "خروج از حساب انجام نشد",
+                    "error"
+                );
                 return;
             }
 
             window.location.reload();
+
         } catch (err) {
+
             console.error(err);
-            alert("ارتباط با سرور برقرار نشد");
+
+            await Swal.fire(
+                "خطا",
+                "ارتباط با سرور برقرار نشد",
+                "error"
+            );
         }
     });
 });

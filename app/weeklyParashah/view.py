@@ -4,7 +4,7 @@ from markupsafe import Markup
 from redis import asyncio as aioredis
 from core.config import settings
 from wtforms import FileField, TextAreaField
-from wtforms.validators import Optional, DataRequired
+from wtforms.validators import Optional, DataRequired,InputRequired
 import json
 from sqlalchemy.orm import Session
 from core.database import get_db
@@ -48,7 +48,7 @@ class ParashaView(ModelView, model=ParashaModel):
         },
         "image": {
             "label": "تصویر پاراشا",
-            "validators": [Optional()]
+            "validators": [InputRequired()]
         }
     }
 
@@ -72,6 +72,14 @@ class ParashaView(ModelView, model=ParashaModel):
     can_edit = True
     can_delete = True
     can_view_details = True
+
+    async def on_model_change(self, data, model, is_created, request):
+        image = data.get("image")
+
+        if is_created and (not image):
+            raise ValueError("تصویر پروفایل الزامی است")
+
+        await super().on_model_change(data, model, is_created, request)
 
     async def after_model_change(self, data, model, is_created, request,
                                  db: Session = Depends(get_db)):

@@ -60,6 +60,7 @@ async def first_step_login(request: UserLoginSchema,db: Session = Depends(get_db
         json.dumps({
            "code": user_obj.verification_code,
             "user_id": user_obj.id,
+            "person_id": user_obj.person.id,
             "name":user_obj.person.name,
             "family_name":user_obj.person.family_name,
             "is_admin":user_obj.person.is_admin,

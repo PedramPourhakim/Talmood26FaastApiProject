@@ -83,6 +83,7 @@ async def retrieve_person(
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"Person with id {person_id} not found")
 
+@cache(300)
 @router.get("/get_rabbies",response_model=List[PersonResponseSchema],
                 status_code=status.HTTP_200_OK)
 async def get_rabbies(db: Session = Depends(get_db)):

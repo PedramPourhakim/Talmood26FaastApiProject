@@ -2,7 +2,7 @@ from sqladmin import ModelView
 from person.models import PersonModel
 from markupsafe import Markup
 from wtforms import FileField
-from wtforms.validators import Optional
+from wtforms.validators import Optional,InputRequired
 
 
 class PersonView(ModelView, model=PersonModel):
@@ -17,7 +17,12 @@ class PersonView(ModelView, model=PersonModel):
     form_overrides = {
         "image": FileField,  # ImageField رو به FileField تبدیل کن
     }
-
+    form_args = {
+        "image": {
+            "label": "تصویر پروفایل",
+            "validators": [InputRequired()]
+        }
+    }
     column_formatters = {
         "image": lambda m, a: Markup(
             f'<img src="/static/person_images/{m.image.path.split("/")[-1]}" '
@@ -35,3 +40,11 @@ class PersonView(ModelView, model=PersonModel):
     can_edit = True
     can_delete = True
     can_view_details = True
+
+    async def on_model_change(self, data, model, is_created, request):
+        image = data.get("image")
+
+        if is_created and (not image):
+            raise ValueError("تصویر پروفایل الزامی است")
+
+        await super().on_model_change(data, model, is_created, request)

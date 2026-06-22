@@ -8,9 +8,16 @@ security = HTTPBearer(scheme_name="Token")
 
 
 def get_authenticated_user(
-        credentials: HTTPAuthorizationCredentials = Depends(security)
+        # credentials: HTTPAuthorizationCredentials = Depends(security)
+        request: Request
 ):
-    token = credentials.credentials
+    # token = credentials.credentials
+    token = request.cookies.get("access_token")
+    if not token:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Authentication failed, access token not found",
+        )
     try:
         payload = jwt.decode(
             token, settings.JWT_SECRET_KEY, algorithms=settings.JWT_ALGORITHM
@@ -23,6 +30,7 @@ def get_authenticated_user(
             )
         current_user = {
             "user_id": payload["user_id"],
+            "person_id": str(payload["person_id"]),
             "name": payload["name"],
             "family_name": payload["family_name"],
             "is_admin": payload["is_admin"],
@@ -78,6 +86,7 @@ def generate_access_token(
     payload = {
         "type": "access",
         "user_id": str(user_data["user_id"]),
+        "person_id": str(user_data["person_id"]),
         "name": user_data["name"],
         "family_name": user_data["family_name"],
         "is_admin": user_data["is_admin"],
@@ -104,6 +113,7 @@ def generate_refresh_token(
     payload = {
         "type": "refresh",
         "user_id": str(user_data["user_id"]),
+        "person_id": str(user_data["person_id"]),
         "name": user_data["name"],
         "family_name": user_data["family_name"],
         "is_admin": user_data["is_admin"],

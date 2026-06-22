@@ -1,0 +1,36 @@
+<section class="max-w-6xl mx-auto mt-16" id="tabs_section">
+
+    <!-- Tabs -->
+    <div class="flex justify-center border-b mb-8">
+
+        <button
+                class="tab-btn px-6 py-3 cursor-pointer text-lg font-semibold border-b-4 border-blue-900 text-blue-900"
+                data-tab="rabbies-tab">
+            ربانیم
+        </button>
+
+        <button
+                class="tab-btn px-6 py-3 cursor-pointer text-lg font-semibold text-gray-500"
+                data-tab="qa-tab">
+            پرسش و پاسخ‌های من
+        </button>
+
+        <button
+                class="tab-btn px-6 py-3 cursor-pointer text-lg font-semibold text-gray-500"
+                data-tab="payments-tab">
+            پرداخت‌های من
+        </button>
+
+    </div>
+
+
+    {% include "partials/rabbie_section.html" %}
+
+
+    {% include "partials/qa_tab.html" %}
+
+
+    {% include "partials/payments_tab.html" %}
+
+
+</section>

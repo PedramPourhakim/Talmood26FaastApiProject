@@ -1,0 +1,96 @@
+<div id="qa-tab" class="tab-content hidden">
+
+    <div class="bg-white rounded-3xl shadow-xl p-8">
+
+        <div class="flex items-center justify-between mb-6">
+
+            <h2 class="text-2xl font-bold text-blue-900">
+               سوابق پرسش و پاسخ شخص : <strong>{{current_user.name}} {{current_user.family_name}}</strong>
+            </h2>
+
+        </div>
+
+        <div class="overflow-x-auto">
+
+            <table class="w-full text-center">
+
+                <thead class="bg-blue-900 text-white">
+
+                <tr>
+                    <th class="p-4">
+                        {{ "نام تلمید" if current_user.is_rabbie else "نام ربی" }}
+                    </th>
+                    <th class="p-4">سوال</th>
+
+                    <th class="p-4">
+                        پاسخ
+                    </th>
+
+                    <th class="p-4">
+                        تاریخ
+                    </th>
+
+                    <th class="p-4">
+                        وضعیت
+                    </th>
+
+                    <th class="p-4">
+                        عملیات
+                    </th>
+
+                </tr>
+
+                </thead>
+
+                <tbody id="qa-table-body">
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+<div id="edit-qa-modal"
+     class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+
+    <div class="bg-white rounded-2xl p-8 w-full max-w-xl">
+
+        <h2 class="text-2xl font-bold text-blue-900 mb-5">
+
+            ویرایش سوال
+
+        </h2>
+
+        <textarea
+                aria-label="Question"
+                id="edit-question"
+                rows="6"
+                class="w-full border rounded-xl p-4">
+        </textarea>
+
+        <div class="flex gap-3 mt-5">
+
+            <button
+                    id="save-edit-btn"
+                    class="bg-blue-900 text-white px-6 py-3 rounded-xl cursor-pointer">
+
+                ذخیره
+
+            </button>
+
+            <button
+                    id="close-edit-btn"
+                    class="bg-gray-200 px-6 py-3 rounded-xl cursor-pointer">
+
+                انصراف
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>

@@ -1,27 +1,61 @@
-
-
-<div id="rabbiesection"
-     class="relative max-w-lg mx-auto
+<div id="rabbies-tab" class="tab-content">
+    <div id="rabbiesection"
+         class="relative max-w-lg mx-auto
             bg-gradient-to-br from-blue-800 to-blue-900
             rounded-3xl shadow-2xl py-5 px-4">
 
-    <button id="rabbi-prev"
-            class="absolute left-3 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-white shadow-lg">
-        ◀
-    </button>
+        <button id="rabbi-prev"
+                class="absolute left-3 cursor-pointer top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-white shadow-lg">
+            ◀
+        </button>
 
-    <div class="embla">
-        <div class="embla__container" id="rabbi-carousel">
+        <div class="embla">
+            <div class="embla__container" id="rabbi-carousel">
+            </div>
         </div>
+
+        <button id="rabbi-next"
+                class="absolute right-3 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-white shadow-lg cursor-pointer">
+            ▶
+        </button>
+
+        <div id="carousel-dots"
+             class="flex justify-center gap-2 mt-8">
+        </div>
+
     </div>
+    <div id="question-modal"
+         class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
 
-    <button id="rabbi-next"
-            class="absolute right-3 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-white shadow-lg">
-        ▶
-    </button>
+        <div class="bg-white rounded-2xl p-6 w-full max-w-lg">
 
-    <div id="carousel-dots"
-         class="flex justify-center gap-2 mt-8">
+            <h2 id="modal-rabbi-name"
+                class="text-2xl font-bold text-blue-900 mb-5">
+            </h2>
+
+            <textarea
+                    aria-label="Question text"
+                    id="question-text"
+                    rows="6"
+                    class="w-full border rounded-xl p-4"
+                    placeholder="سؤال خود را بنویسید...">
+        </textarea>
+
+            <div class="flex gap-4 mt-5">
+
+                <button id="send-question-btn"
+                        class="bg-blue-900 text-white px-6 py-3 rounded-xl">
+                    ارسال سؤال
+                </button>
+
+                <button id="close-question-modal"
+                        class="bg-gray-200 px-6 py-3 rounded-xl">
+                    انصراف
+                </button>
+
+            </div>
+
+        </div>
+
     </div>
-
 </div>
