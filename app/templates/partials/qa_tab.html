@@ -5,14 +5,14 @@
         <div class="flex items-center justify-between mb-6">
 
             <h2 class="text-2xl font-bold text-blue-900">
-               سوابق پرسش و پاسخ شخص : <strong>{{current_user.name}} {{current_user.family_name}}</strong>
+                سوابق پرسش و پاسخ شخص : <strong>{{current_user.name}} {{current_user.family_name}}</strong>
             </h2>
 
         </div>
 
         <div class="overflow-x-auto">
 
-            <table class="w-full text-center">
+            <table class="w-full text-center table-fixed">
 
                 <thead class="bg-blue-900 text-white">
 
@@ -58,27 +58,29 @@
 
     <div class="bg-white rounded-2xl p-8 w-full max-w-xl">
 
-        <h2 class="text-2xl font-bold text-blue-900 mb-5">
+        <h2
+                id="edit-modal-title"
+                class="text-2xl font-bold text-blue-900 mb-5">
 
             ویرایش سوال
 
         </h2>
 
         <textarea
-                aria-label="Question"
+                aria-label="editor content"
                 id="edit-question"
                 rows="6"
-                class="w-full border rounded-xl p-4">
+                class="w-full border rounded-xl p-4"
+                placeholder="">
         </textarea>
+
 
         <div class="flex gap-3 mt-5">
 
             <button
                     id="save-edit-btn"
                     class="bg-blue-900 text-white px-6 py-3 rounded-xl cursor-pointer">
-
                 ذخیره
-
             </button>
 
             <button
@@ -86,6 +88,35 @@
                     class="bg-gray-200 px-6 py-3 rounded-xl cursor-pointer">
 
                 انصراف
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div id="text-modal"
+     class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+
+    <div class="bg-white rounded-2xl p-8 max-w-3xl w-full mx-4">
+
+        <h2 class="text-2xl font-bold text-blue-900 mb-5">
+            متن کامل
+        </h2>
+
+        <div id="full-text"
+             class="leading-9 max-h-[70vh] overflow-y-auto whitespace-pre-wrap">
+        </div>
+
+        <div class="mt-6">
+
+            <button
+                id="close-text-modal"
+                class="bg-blue-900 text-white px-6 py-3 rounded-xl cursor-pointer">
+
+                بستن
 
             </button>
 

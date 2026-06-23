@@ -1,4 +1,6 @@
 import { loadQAs } from "./qa";
+const currentuser = window.currentUser;
+import Swal from 'sweetalert2';
 document.querySelectorAll(".tab-btn").forEach(btn => {
 
 
@@ -34,7 +36,16 @@ document.querySelectorAll(".tab-btn").forEach(btn => {
         );
 
         if (btn.dataset.tab === "qa-tab") {
-            await loadQAs();
+            if (currentuser) {
+                await loadQAs();
+            }
+            else {
+                  await Swal.fire({
+                        title: "خطا",
+                        text: " ورود/ثبت نام الزامی میباشد",
+                        icon: "error"
+                    });
+            }
         }
 
     });

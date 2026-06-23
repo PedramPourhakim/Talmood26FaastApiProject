@@ -34,7 +34,7 @@ class RefreshTokenMiddleware(BaseHTTPMiddleware):
                     }
             except ExpiredSignatureError:
                 access_token_expired = True
-        if access_token_expired and refresh_token:
+        elif refresh_token:
             try:
                 payload = decode_token(refresh_token)
 

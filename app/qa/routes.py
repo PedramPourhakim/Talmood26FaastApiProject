@@ -72,10 +72,22 @@ async def update_qa(request: UpdateQASchema,
                     qa_id: str = Path(..., description="Id of the QA"),
                     db: Session = Depends(get_db),
                     user: dict = Depends(get_authenticated_user)):
+
     qa = db.query(QAModel).filter_by(id=qa_id).one_or_none()
     if qa:
-        qa.question = request.question
-        qa.answer = request.answer
+        if user["is_rabbie"]:
+            answer = (request.answer or "").strip()
+
+            if not answer:
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail="Answer is required"
+                )
+
+            qa.answer = answer
+            qa.is_answered = True
+        else:
+            qa.question = request.question
         qa.is_answered = request.is_answered
 
         db.commit()
