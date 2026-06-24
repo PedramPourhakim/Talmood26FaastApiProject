@@ -9,7 +9,7 @@ class QAView(ModelView, model=QAModel):
     name_plural = 'پرسش و پاسخ از ربانیم'
     icon = 'fa-solid fa-question-circle text-danger'
 
-    column_list = ["question", "answer", "is_answered",
+    column_list = ["is_answered",
                     "rabbie", "talmid"]
     column_searchable_list = ["talmid", "rabbie"]
 

@@ -19,6 +19,15 @@ class ParashaModel(Base):
         nullable=True
     )
 
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "title": self.title,
+            "description": self.description,
+            "creation_date": self.creation_date.isoformat() if self.creation_date else None,
+            "image_url": self.image_url,
+        }
+
     def __str__(self):
         return f"{self.title}"
 

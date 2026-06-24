@@ -2,6 +2,7 @@ import EmblaCarousel from 'embla-carousel'
 import Autoplay from 'embla-carousel-autoplay'
 import Swal from 'sweetalert2';
 
+const currentuser = window.currentUser;
 const modal = document.getElementById("question-modal");
 const modalRabbiName = document.getElementById("modal-rabbi-name");
 const questionText = document.getElementById("question-text");
@@ -70,13 +71,26 @@ document.addEventListener("DOMContentLoaded", async () => {
             .forEach(card => {
 
                 card.addEventListener("click", () => {
+                    if (currentuser) {
+                        selectedRabbiId = card.dataset.id;
 
-                    selectedRabbiId = card.dataset.id;
+                        modalRabbiName.innerText =
+                            `سؤال از ${card.dataset.name}`;
 
-                    modalRabbiName.innerText =
-                        `سؤال از ${card.dataset.name}`;
+                        modal.classList.remove("hidden");
+                    } else {
+                         Swal.fire({
+                            title: "خطا",
+                            text: "جهت پرسش و پاسخ ورود/ثبت نام الزامی میباشد",
+                            icon: "error",
 
-                    modal.classList.remove("hidden");
+                            heightAuto: false,
+                            scrollbarPadding: false,
+
+
+                        });
+                    }
+
                 });
 
             });
@@ -123,12 +137,24 @@ document.getElementById("send-question-btn")
     .addEventListener("click", async () => {
 
         if (!window.currentUser) {
+            document.body.style.overflow = "hidden";
+            await Swal.fire({
+                title: "خطا",
+                text: "جهت پرسش و پاسخ ورود/ثبت نام الزامی میباشد",
+                icon: "error",
 
-            await Swal.fire(
-                "ورود لازم است",
-                "ابتدا وارد حساب کاربری خود شوید.",
-                "warning"
-            );
+                heightAuto: false,
+                scrollbarPadding: false,
+
+
+                showClass: {
+                    popup: ""
+                },
+
+                hideClass: {
+                    popup: ""
+                },
+            });
 
             return;
         }
@@ -153,8 +179,8 @@ document.getElementById("send-question-btn")
                     question: question,
                     answer: null,
                     rabbie_id: selectedRabbiId,
-                    talmid_id: window.currentUser.person_id
-
+                    talmid_id: window.currentUser.person_id,
+                    is_answered: false
                 })
             });
 

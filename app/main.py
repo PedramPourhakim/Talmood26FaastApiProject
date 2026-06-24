@@ -15,6 +15,8 @@ from core.database import engine
 from person.view import PersonView
 from weeklyParashah.view import ParashaView
 from users.view import UserView
+from paymentType.view import PaymentTypeView
+from paymentAccount.view import PaymentAccountView
 from fastapi.staticfiles import StaticFiles
 from sqlalchemy_file.storage import StorageManager
 from libcloud.storage.drivers.local import LocalStorageDriver
@@ -53,6 +55,8 @@ admin.add_view(PersonView)
 admin.add_view(ParashaView)
 admin.add_view(UserView)
 admin.add_view(QAView)
+admin.add_view(PaymentTypeView)
+admin.add_view(PaymentAccountView)
 
 # patch_fastapi(app,docs_url="/swagger")
 

@@ -6,9 +6,7 @@ from core.config import settings
 from wtforms import FileField, TextAreaField
 from wtforms.validators import Optional, DataRequired,InputRequired
 import json
-from sqlalchemy.orm import Session
-from core.database import get_db
-from fastapi import Depends
+from core.database import SessionLocal
 
 redis = aioredis.from_url(settings.REDIS_URL)
 
@@ -77,23 +75,26 @@ class ParashaView(ModelView, model=ParashaModel):
         image = data.get("image")
 
         if is_created and (not image):
-            raise ValueError("تصویر پروفایل الزامی است")
+            raise ValueError("تصویر پاراشا الزامی است")
 
         await super().on_model_change(data, model, is_created, request)
 
-    async def after_model_change(self, data, model, is_created, request,
-                                 db: Session = Depends(get_db)):
-        latest_parasha = (
-            db.query(ParashaModel)
-            .order_by(ParashaModel.creation_date.desc())
-            .first()
-        )
+    async def after_model_change(self, data, model, is_created, request):
+        db = SessionLocal()
+        try:
+            latest_parasha = (
+                db.query(ParashaModel)
+                .order_by(ParashaModel.creation_date.desc())
+                .first()
+            )
 
-        await redis.set(
-            CACHE_KEY,
-            json.dumps(latest_parasha),
-            ex=3600
-        )
+            await redis.set(
+                CACHE_KEY,
+                json.dumps(latest_parasha.to_dict(), ensure_ascii=False),
+                ex=3600
+            )
+        finally:
+            db.close()
 
     async def after_model_delete(self, model, request):
         await redis.delete(CACHE_KEY)

@@ -20,6 +20,8 @@ class PersonModel(Base):
         nullable=True
     )
     users = relationship("UserModel",back_populates="person")
+    payment_accounts = relationship("PaymentAccountModel",back_populates="person")
+    person = relationship("PaymentModel",back_populates="person")
     asked_questions = relationship(
         "QAModel",
         foreign_keys="QAModel.talmid_id",

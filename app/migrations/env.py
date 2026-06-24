@@ -38,7 +38,10 @@ if config.config_file_name is not None:
 from person.models import *
 from weeklyParashah.models import *
 from users.models import *
+from paymentType.models import *
 from qa.models import *
+from paymentAccount.models import *
+from payment.models import *
 
 target_metadata = Base.metadata
 

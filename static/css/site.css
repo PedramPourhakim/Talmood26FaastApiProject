@@ -1,108 +1,194 @@
- html, body {
-      width: 100%;
-      max-width: 100%;
-      overflow-x: clip; /* اگر Safari قدیمی داشتی، hidden بگذار */
-     scroll-behavior: smooth;
-    }
-
-    body {
-      font-family: 'Vazirmatn', sans-serif;
-      background-color: #fdfdfe;
-        direction: rtl;
-    }
-
-    /* تا وقتی روی anchor می‌پری، زیر هدر نره */
-    [id] { scroll-margin-top: 5rem; }
-
-    /* شکستن متن/لینک‌های خیلی بلند که باعث overflow می‌شوند */
-    a, p, h1, h2, h3, h4, h5, h6, span, div {
-      overflow-wrap: anywhere;
-      word-break: break-word;
-    }
-
-    /* رسانه‌ها بیرون نزنند */
-    img, svg, video, canvas {
-      max-width: 100%;
-      height: auto;
-    }
-@keyframes modalIn{
-  from{
-    opacity:0;
-    transform:translateY(8px) scale(.96);
-  }
-  to{
-    opacity:1;
-    transform:translateY(0) scale(1);
-  }
+html, body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: clip; /* اگر Safari قدیمی داشتی، hidden بگذار */
+    scroll-behavior: smooth;
 }
 
-.animate-modal{
-  animation:.18s ease-out modalIn;
+body {
+    font-family: 'Vazirmatn', sans-serif;
+    background-color: #fdfdfe;
+    direction: rtl;
+}
+.swal2-shown {
+    overflow: hidden !important;
+}
+
+/* تا وقتی روی anchor می‌پری، زیر هدر نره */
+[id] {
+    scroll-margin-top: 5rem;
+}
+
+/* شکستن متن/لینک‌های خیلی بلند که باعث overflow می‌شوند */
+a, p, h1, h2, h3, h4, h5, h6, span, div {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+/* رسانه‌ها بیرون نزنند */
+img, svg, video, canvas {
+    max-width: 100%;
+    height: auto;
+}
+
+@keyframes modalIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px) scale(.96);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.animate-modal {
+    animation: .18s ease-out modalIn;
 }
 
 /* OTP inputs */
 
-.otp-input{
-  width:52px;
-  height:56px;
-  font-size:22px;
-  text-align:center;
-  border:1px solid #d1d5db;
-  border-radius:12px;
-  transition:.15s;
+.otp-input {
+    width: 52px;
+    height: 56px;
+    font-size: 22px;
+    text-align: center;
+    border: 1px solid #d1d5db;
+    border-radius: 12px;
+    transition: .15s;
 }
 
-.otp-input:focus{
-  border-color:#2563eb;
-  box-shadow:0 0 0 3px rgba(37,99,235,.2);
-  outline:none;
+.otp-input:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, .2);
+    outline: none;
 }
 
-#send-code-btn{
-    cursor:pointer;
+#send-code-btn {
+    cursor: pointer;
 }
+
 /* Fade In */
 @keyframes fadeIn {
-  from { opacity:0; transform:scale(.96); }
-  to { opacity:1; transform:scale(1); }
+    from {
+        opacity: 0;
+        transform: scale(.96);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
-.otp-box:focus{
-  border-color:#2563eb;
-  box-shadow:0 0 0 3px rgba(37,99,235,.2);
+
+.otp-box:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, .2);
 }
 
 
 /* Shake animation */
 @keyframes shake {
-  0% { transform: translateX(0); }
-  25% { transform: translateX(-4px); }
-  50% { transform: translateX(4px); }
-  75% { transform: translateX(-4px); }
-  100% { transform: translateX(0); }
+    0% {
+        transform: translateX(0);
+    }
+    25% {
+        transform: translateX(-4px);
+    }
+    50% {
+        transform: translateX(4px);
+    }
+    75% {
+        transform: translateX(-4px);
+    }
+    100% {
+        transform: translateX(0);
+    }
 }
 
-.animate-shake{
-  animation:shake .3s ease-in-out;
+.animate-shake {
+    animation: shake .3s ease-in-out;
 }
 
-.input-style{
+.input-style {
     @apply w-full px-4 py-3 mt-1 bg-white border border-gray-300 rounded-xl
-           text-gray-800 placeholder-gray-400
-           focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-200
-           transition duration-200;
+    text-gray-800 placeholder-gray-400
+    focus:outline-none focus:border-red-500 focus:ring-2 focus:ring-red-200
+    transition duration-200;
 }
-table {
-    table-layout: fixed;
-    width: 100%;
-}
+
 
 .question-preview {
     display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-
     overflow: hidden;
-    word-break: break-word;
     cursor: pointer;
+}
+
+.question-preview:hover {
+    color: #1d4ed8;
+}
+
+/*.qa-card{*/
+
+/*    transition:.2s;*/
+/*}*/
+
+/*.qa-card:hover{*/
+
+/*    transform:translateY(-3px);*/
+
+/*    box-shadow:*/
+/*            0 20px 40px rgba(0,0,0,.08);*/
+/*}*/
+.qa-card {
+
+    background: white;
+
+    border-radius: 24px;
+
+    padding: 1.5rem;
+
+    box-shadow: 0 10px 25px rgba(0, 0, 0, .08);
+
+    transition: .2s;
+}
+
+.qa-card:hover {
+
+    transform: translateY(-3px);
+
+}
+
+.question-bubble {
+
+    background: #eff6ff;
+
+    border-radius: 20px;
+
+    padding: 1rem;
+
+    line-height: 2rem;
+
+}
+
+.answer-bubble {
+
+    background: #f3f4f6;
+
+    border-radius: 20px;
+
+    padding: 1rem;
+
+    line-height: 2rem;
+
+}
+
+.empty-answer {
+
+    color: #9ca3af;
+    font-style: italic;
+
 }
 

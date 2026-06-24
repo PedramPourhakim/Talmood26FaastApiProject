@@ -1,127 +1,259 @@
 let editingQaId = null;
 import Swal from 'sweetalert2';
 
-
 const currentUser = window.currentUser;
+let currentPage = 1;
 
-export async function loadQAs() {
+const pageSize = 5;
 
-    const tbody = document.getElementById("qa-table-body");
+let currentFilter = "";
 
-    tbody.innerHTML = "";
+export async function loadQAs(page = currentPage) {
+
+    const container = document.getElementById("qa-table-body");
+    container.innerHTML = "";
 
     try {
 
-        const response = await fetch("/qa/get_all_questions_answers", {
-            credentials: "include"
-        });
+        const params = new URLSearchParams();
+
+        params.append(
+            "limit",
+            pageSize
+        );
+
+        params.append(
+            "offset",
+            (currentPage - 1) * pageSize
+        );
+
+        if (currentFilter !== "") {
+
+            params.append(
+                "is_answered",
+                currentFilter
+            );
+        }
+
+        const response = await fetch(
+            `/qa/get_all_questions_answers?${params}`,
+            {
+                credentials: "include"
+            }
+        );
 
         if (!response.ok) {
 
-            tbody.innerHTML = `
-            <tr>
-                <td colspan="5" class="p-8 text-gray-500">
+            container.innerHTML = `
+                <div class="text-center text-gray-500 p-10">
                     ابتدا وارد حساب کاربری شوید
-                </td>
-            </tr>
+                </div>
             `;
 
             return;
         }
 
-        const qas = await response.json();
+         const result = await response.json();
+
+        const qas = result.items;
+        const total = result.total;
+
+        const totalPages =
+            Math.ceil(total / pageSize);
+
+        document.getElementById("page-number")
+            .innerText =
+            `صفحه ${currentPage} از ${totalPages || 1}`;
+
+        const nextBtn =
+            document.getElementById("next-page-btn");
+
+        const prevBtn =
+            document.getElementById("prev-page-btn");
+
+        nextBtn.disabled =
+            currentPage >= totalPages;
+
+        prevBtn.disabled =
+            currentPage <= 1;
+
+        nextBtn.classList.toggle(
+            "opacity-50",
+            nextBtn.disabled
+        );
+
+        prevBtn.classList.toggle(
+            "opacity-50",
+            prevBtn.disabled
+        );
 
         if (!qas.length) {
 
-            tbody.innerHTML = `
-            <tr>
-                <td colspan="5" class="p-8">
-                    هنوز سوالی ثبت نشده است
-                </td>
-            </tr>
+            container.innerHTML = `
+                <div class="text-center p-10 text-gray-500">
+                    نتیجه‌ای یافت نشد
+                </div>
             `;
 
             return;
         }
-        let editButtonText = "ویرایش"
-        if (currentUser) {
-            editButtonText = currentUser.is_rabbie
-                ? "ویرایش جواب"
-                : "ویرایش سوال";
-        }
+
+        const editButtonText =
+            currentUser?.is_rabbie
+                ? "ویرایش پاسخ"
+                : "ویرایش سؤال";
+
+        let html = "";
 
         qas.forEach(q => {
 
-            let otherSideName = "-";
-
-            if (currentUser) {
-
-                otherSideName = currentUser.is_rabbie
+             const otherSideName =
+                currentUser?.is_rabbie
                     ? `${q.talmid.name} ${q.talmid.family_name}`
                     : `${q.rabbie.name} ${q.rabbie.family_name}`;
 
+            html += `
+
+<div class="qa-card">
+
+    <div class="flex justify-between items-center mb-6">
+
+        <div>
+
+            <div class="text-sm text-gray-400">
+
+                ${
+                currentUser.is_rabbie
+                    ? "تلمید"
+                    : "ربی"
             }
 
-            tbody.innerHTML += `
-            <tr class="border-b">
-                 
-                 <td class="p-4">
-            ${otherSideName}
-                    </td>
-                 
-                <td class="p-4 w-80">
-                    <div
-                        class="question-preview preview-text"
-                        data-text="${q.question}">
-                        ${q.question}
-                    </div>
-                </td>
+            </div>
 
-                <td class="p-4 w-80">
-                    <div
-                        class="question-preview preview-text"
-                        data-text="${q.answer ?? "-"}">
-                        ${q.answer ?? "-"}
-                    </div>
-                </td>
+            <div class="font-bold text-xl text-blue-900">
 
-                <td class="p-4">
-                    ${new Date(q.creation_date).toLocaleDateString("fa-IR")}
-                </td>
+                ${otherSideName}
 
-                <td class="p-4">
-                    ${q.is_answered ? `<span class="bg-green-100 text-green-700 px-3 py-1 rounded-full">
-                            پاسخ داده شده
-                           </span>` : `<span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full">
-                            در انتظار پاسخ
-                           </span>`}
-                </td>
+            </div>
 
-                <td class="p-4">
+        </div>
 
-                    <button
-                        class="edit-btn bg-blue-700 text-white px-3 py-2 rounded cursor-pointer"
-                        data-id="${q.id}"
-                        data-question="${q.question}"
-                        data-answer="${q.answer ?? ""}">
-                        ${editButtonText}
-                    </button>
+        ${
+                q.is_answered
+                    ?
+                    `
+                <span class="bg-green-100 text-green-700 px-4 py-2 rounded-full">
 
-                    <button
-                        class="delete-btn bg-red-700 text-white px-3 py-2 rounded cursor-pointer"
-                        data-id="${q.id}">
-                        حذف
-                    </button>
+                    پاسخ داده شده
 
-                </td>
+                </span>
+                `
+                    :
+                    `
+                <span class="bg-yellow-100 text-yellow-700 px-4 py-2 rounded-full">
 
-            </tr>
-            `;
+                    در انتظار پاسخ
 
+                </span>
+                `
+            }
+
+    </div>
+
+
+    <div class="space-y-4">
+
+        <div>
+
+            <div class="mb-2 font-bold text-blue-900">
+
+                ❓ سوال
+
+            </div>
+
+            <div
+                class="question-bubble preview-text cursor-pointer"
+                data-text="${q.question}">
+
+                ${q.question}
+
+            </div>
+
+        </div>
+
+
+        <div>
+
+            <div class="mb-2 font-bold text-gray-700">
+
+                💬 پاسخ
+
+            </div>
+
+            <div
+                class="
+                answer-bubble
+                preview-text
+                cursor-pointer
+                ${!q.answer ? "empty-answer" : ""}
+                "
+                data-text="${q.answer ?? "-"}">
+
+                ${q.answer ?? "هنوز پاسخی ثبت نشده است"}
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="mt-8 flex flex-wrap justify-between items-center gap-4">
+
+        <div class="text-gray-400 text-sm">
+
+            📅
+            ${new Date(q.creation_date).toLocaleDateString("fa-IR")}
+
+        </div>
+
+        <div class="flex gap-3">
+
+            <button
+                    class="edit-btn cursor-pointer bg-blue-800 text-white px-5 py-2 rounded-xl"
+
+                    data-id="${q.id}"
+                    data-question="${q.question}"
+                    data-answer="${q.answer ?? ""}">
+
+                ${editButtonText}
+
+            </button>
+
+
+            <button
+                    class="delete-btn cursor-pointer bg-red-700 text-white px-5 py-2 rounded-xl"
+                    data-id="${q.id}">
+
+                حذف
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+`;
         });
 
+        container.innerHTML = html;
+
         wireEvents();
+
         wirePreviewEvents();
+
     } catch (err) {
 
         console.error(err);
@@ -375,3 +507,32 @@ document.addEventListener("keydown", e => {
     }
 
 });
+document
+    .getElementById("qa-filter")
+    ?.addEventListener("change", async (e) => {
+
+        currentFilter = e.target.value;
+        currentPage = 1;
+
+        await loadQAs();
+    });
+document
+    .getElementById("next-page-btn")
+    ?.addEventListener("click", async () => {
+
+        currentPage++;
+
+        await loadQAs();
+    });
+
+document
+    .getElementById("prev-page-btn")
+    ?.addEventListener("click", async () => {
+
+        if (currentPage === 1)
+            return;
+
+        currentPage--;
+
+        await loadQAs();
+    });

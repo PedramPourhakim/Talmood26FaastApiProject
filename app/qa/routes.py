@@ -1,11 +1,8 @@
-from typing import List
-
 from fastapi import APIRouter, Depends, status, Query, HTTPException, Path
 from fastapi.responses import JSONResponse
 from fastapi_cache.decorator import cache
 from sqlalchemy.orm import Session, joinedload
 
-import qa
 from auth.jwt_auth import get_authenticated_user
 from core.database import get_db
 from qa.models import QAModel
@@ -15,41 +12,56 @@ router = APIRouter(tags=["qa"], prefix="/qa")
 
 
 @cache(60)
-@router.get("/get_all_questions_answers", status_code=status.HTTP_200_OK,
-            response_model=List[QAResponseSchema])
+@router.get(
+    "/get_all_questions_answers",
+    status_code=status.HTTP_200_OK,
+    response_model=PaginatedQAResponseSchema
+)
 async def get_question_answers(
-        is_answered: bool = Query(None, description="filter question based on is answered or not"),
-        limit: int = Query(
-            10, gt=0, le=50, description="limiting the number of items to retrieve"
-        ),
-        offset: int = Query(
-            0, ge=0, description="use for paginating based on passed items"
-        ),
+        is_answered: bool = Query(None),
+        limit: int = Query(10, gt=0, le=50),
+        offset: int = Query(0, ge=0),
         user=Depends(get_authenticated_user),
-        db: Session = Depends(get_db)):
+        db: Session = Depends(get_db)
+):
     if user["is_rabbie"]:
+
         query = (
             db.query(QAModel)
             .options(joinedload(QAModel.talmid))
             .filter(QAModel.rabbie_id == user["person_id"])
+            .order_by(QAModel.creation_date.desc())
         )
+
     else:
+
         query = (
             db.query(QAModel)
             .options(joinedload(QAModel.rabbie))
             .filter(QAModel.talmid_id == user["person_id"])
+            .order_by(QAModel.creation_date.desc())
         )
 
     if is_answered is not None:
-        query = query.filter(QAModel.is_answered == is_answered)
+        query = query.filter(
+            QAModel.is_answered == is_answered
+        )
 
-    query_result = (
+    total = query.count()
+
+    items = (
         query
         .offset(offset)
         .limit(limit)
         .all()
     )
-    return query_result
+
+    return {
+        "items": items,
+        "total": total,
+        "page": (offset // limit) + 1,
+        "page_size": limit
+    }
 
 
 @router.post("", status_code=status.HTTP_201_CREATED,
@@ -72,7 +84,6 @@ async def update_qa(request: UpdateQASchema,
                     qa_id: str = Path(..., description="Id of the QA"),
                     db: Session = Depends(get_db),
                     user: dict = Depends(get_authenticated_user)):
-
     qa = db.query(QAModel).filter_by(id=qa_id).one_or_none()
     if qa:
         if user["is_rabbie"]:
