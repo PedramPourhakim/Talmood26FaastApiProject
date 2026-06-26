@@ -13,7 +13,29 @@ body {
 .swal2-shown {
     overflow: hidden !important;
 }
+.swal2-container{
+    z-index:20000 !important;
+}
+::-webkit-scrollbar {
+    width: 5px;
+}
 
+/* پس‌زمینه */
+::-webkit-scrollbar-track {
+    background: #e5e7eb;
+    border-radius: 9999px;
+}
+
+/* خود اسکرول */
+::-webkit-scrollbar-thumb {
+    background: #1e3a8a;
+    border-radius: 9999px;
+}
+
+/* حالت هاور */
+::-webkit-scrollbar-thumb:hover {
+    background: #1e40af;
+}
 /* تا وقتی روی anchor می‌پری، زیر هدر نره */
 [id] {
     scroll-margin-top: 5rem;
@@ -26,7 +48,7 @@ a, p, h1, h2, h3, h4, h5, h6, span, div {
 }
 
 /* رسانه‌ها بیرون نزنند */
-img, svg, video, canvas {
+svg, video, canvas {
     max-width: 100%;
     height: auto;
 }
@@ -191,4 +213,96 @@ img, svg, video, canvas {
     font-style: italic;
 
 }
+.hero-border{
+    position: relative;
+    overflow: hidden;
+    padding: 2px;              /* ضخامت قاب */
+    border-radius: 1.5rem;
+    isolation: isolate;
+}
 
+/* لایه داخلی */
+.hero-content{
+    position: relative;
+    z-index: 2;
+    background: #1e3a8a;
+    border-radius: calc(1.5rem - 2px);
+
+    transform: translateZ(0);
+    will-change: transform;
+}
+.hero-content img{
+    display: block;
+    width: 100%;
+    height: 100%;
+
+    transition: transform .6s ease;
+
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    will-change: transform;
+}
+
+/* حلقه نورانی */
+.hero-glow::before{
+    content: "";
+    position: absolute;
+    inset:-35%;
+
+    background:
+        conic-gradient(
+            from 0deg,
+            transparent 0deg,
+            transparent 325deg,
+            #60a5fa 334deg,
+            #ffffff 340deg,
+            #93c5fd 346deg,
+            #2563eb 352deg,
+            transparent 360deg
+        );
+
+    animation: heroRotate 4s linear infinite;
+    z-index: 1;
+}
+.hero-glow:hover::before{
+    animation-duration: 1.8s;
+}
+/* هاله نور */
+.hero-glow::after{
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow:
+        0 0 10px rgba(96,165,250,.35),
+        0 0 22px rgba(37,99,235,.25);
+    pointer-events: none;
+    z-index: 3;
+}
+
+@keyframes heroRotate{
+    to{
+        transform: rotate(360deg);
+    }
+}
+
+
+.hero-glow:hover .hero-content img{
+    transform: scale(1.02);
+}
+@media (hover: hover) {
+    .hero-glow:hover .hero-content img {
+        transform: scale(1.02);
+    }
+
+    .hero-glow:hover::before {
+        animation-duration: 1.8s;
+    }
+}
+@media (max-width:768px){
+
+    .hero-glow::before{
+         animation:none;
+    }
+
+}

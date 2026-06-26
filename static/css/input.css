@@ -2,6 +2,7 @@
 @import "swiper/css/navigation";
 @import "swiper/css/pagination";
 @import "tailwindcss";
+@import "slim-select/styles";
 @tailwind utilities;
 @layer components {
   .input-style {

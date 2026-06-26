@@ -11,7 +11,7 @@ from qa.schemas import *
 router = APIRouter(tags=["qa"], prefix="/qa")
 
 
-@cache(60)
+@cache(300)
 @router.get(
     "/get_all_questions_answers",
     status_code=status.HTTP_200_OK,

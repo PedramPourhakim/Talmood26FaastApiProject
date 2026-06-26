@@ -1,45 +1,54 @@
 <!-- Payments -->
-<div id="payments-tab"
-     class="tab-content hidden">
+
+<div id="payments-tab" class="tab-content hidden">
+    <div class="flex flex-wrap gap-3 mb-8">
+
+        <button class="cursor-pointer payment-filter active rounded-full px-5 py-2 bg-blue-900 text-white transition"
+                data-status="">
+            همه
+        </button>
+
+        <button class="cursor-pointer payment-filter rounded-full px-5 py-2 bg-gray-100 text-gray-700 hover:bg-gray-200 transition"
+                data-status="paid">
+            موفق
+        </button>
+
+        <button class="cursor-pointer payment-filter rounded-full px-5 py-2 bg-gray-100 text-gray-700 hover:bg-gray-200 transition"
+                data-status="pending">
+            در انتظار
+        </button>
+
+        <button class="cursor-pointer payment-filter rounded-full px-5 py-2 bg-gray-100 text-gray-700 hover:bg-gray-200 transition"
+                data-status="failed">
+            ناموفق
+        </button>
+
+    </div>
     <div class="bg-white rounded-3xl shadow-xl p-8">
 
-        <h2 class="text-2xl font-bold text-blue-900 mb-6">
-            تاریخچه پرداخت‌ها
-        </h2>
+        <div class="flex items-center justify-between mb-8">
 
-        <div class="overflow-x-auto">
+            <h2 class="text-2xl font-bold text-blue-900">
+                تاریخچه پرداخت‌ها
+            </h2>
+            <p
+                    id="paymentCounter"
+                    class="text-gray-500 mt-1">
 
-            <table class="w-full text-center">
+            </p>
+        </div>
 
-                <thead class="bg-green-700 text-white">
+        <div
+                id="paymentsContainer"
+                class="grid gap-6">
 
-                <tr>
-                    <th class="p-4">مبلغ</th>
-                    <th class="p-4">تاریخ</th>
-                    <th class="p-4">وضعیت</th>
-                </tr>
-
-                </thead>
-
-                <tbody>
-
-                <tr>
-
-                    <td class="p-4">
-                        هنوز پرداختی ثبت نشده است
-                    </td>
-
-                    <td>-</td>
-
-                    <td>-</td>
-
-                </tr>
-
-                </tbody>
-
-            </table>
+        </div>
+        <div
+                id="paymentsPagination"
+                class="mt-8 flex items-center justify-center gap-4">
 
         </div>
 
     </div>
+
 </div>

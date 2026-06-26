@@ -10,6 +10,8 @@ from weeklyParashah.routes import router as parasha_router
 from templates.rendering_pages import router as index_page_router
 from users.routes import router as users_router
 from qa.routes import router as qa_router
+from paymentType.routes import router as paymentType_router
+from payment.routes import router as payment_router
 from sqladmin import Admin
 from core.database import engine
 from person.view import PersonView
@@ -17,6 +19,7 @@ from weeklyParashah.view import ParashaView
 from users.view import UserView
 from paymentType.view import PaymentTypeView
 from paymentAccount.view import PaymentAccountView
+from payment.view import PaymentView
 from fastapi.staticfiles import StaticFiles
 from sqlalchemy_file.storage import StorageManager
 from libcloud.storage.drivers.local import LocalStorageDriver
@@ -57,6 +60,7 @@ admin.add_view(UserView)
 admin.add_view(QAView)
 admin.add_view(PaymentTypeView)
 admin.add_view(PaymentAccountView)
+admin.add_view(PaymentView)
 
 # patch_fastapi(app,docs_url="/swagger")
 
@@ -73,6 +77,8 @@ app.include_router(parasha_router)
 app.include_router(users_router)
 app.include_router(qa_router)
 app.include_router(index_page_router)
+app.include_router(paymentType_router)
+app.include_router(payment_router)
 
 app.add_middleware(SwaggerMiddleware)
 app.add_middleware(RefreshTokenMiddleware)

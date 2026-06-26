@@ -1,4 +1,5 @@
 import { loadQAs } from "./qa";
+import {loadPersonPayments} from "./payment_tab"
 const currentuser = window.currentUser;
 import Swal from 'sweetalert2';
 document.querySelectorAll(".tab-btn").forEach(btn => {
@@ -38,6 +39,18 @@ document.querySelectorAll(".tab-btn").forEach(btn => {
         if (btn.dataset.tab === "qa-tab") {
             if (currentuser) {
                 await loadQAs();
+            }
+            else {
+                  await Swal.fire({
+                        title: "خطا",
+                        text: " ورود/ثبت نام الزامی میباشد",
+                        icon: "error"
+                    });
+            }
+        }
+        else if (btn.dataset.tab === "payments-tab") {
+            if (currentuser) {
+                await loadPersonPayments();
             }
             else {
                   await Swal.fire({

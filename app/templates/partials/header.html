@@ -21,7 +21,7 @@
             <!-- منوی دسکتاپ -->
             <nav class="hidden md:flex items-center gap-6">
                 <a href="#parasha-section" class="text-slate-700 hover:text-blue-600 transition">آخرین پاراشا</a>
-                <a href="#sedagha" class="text-slate-700 hover:text-blue-600 transition">پرداخت آنلاین</a>
+                <a href="#sedagha" class="sedagha text-slate-700 hover:text-blue-600 transition">پرداخت آنلاین</a>
                 <a href="#rabanim" class="text-slate-700 hover:text-blue-600 transition">پرسش از ربانیم</a>
                 {% if current_user and current_user.is_admin == true %}
                 <a href="/admin" class="text-slate-700 hover:text-red-600 transition">پنل ادمین</a>
@@ -50,7 +50,7 @@
                     آخرین پاراشا
                 </a>
                 <a href="#sedagha"
-                   class="py-3 px-4 rounded-xl text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition">
+                   class="sedagha py-3 px-4 rounded-xl text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition">
                     پرداخت آنلاین
                 </a>
                 <a href="#rabanim"
