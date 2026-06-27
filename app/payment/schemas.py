@@ -19,7 +19,7 @@ class PaymentSchema(BaseModel):
         return value
 
 class CreatePaymentSchema(PaymentSchema):
-    pass
+    payment_account_title: str = Field(..., description="Payment Account Title")
 
 class UpdatePaymentSchema(PaymentSchema):
     pass
@@ -39,4 +39,12 @@ class PaginatedPaymentResponseSchema(BaseModel):
     total: int
     page: int
     page_size: int
+
+class CreatePaymentRequestSchema(BaseModel):
+    amount: int = Field(..., description="Amount to be paid")
+    description: str = Field(...,description="Payment Description")
+    callback_url: str = Field(...,description="Callback URL")
+    mobile: str | None= Field(description="Mobile Number")
+    email: str | None= Field(description="Email Address")
+    currency: str = Field(default="IRT")
 

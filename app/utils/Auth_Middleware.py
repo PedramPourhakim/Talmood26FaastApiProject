@@ -31,6 +31,8 @@ class RefreshTokenMiddleware(BaseHTTPMiddleware):
                         "family_name": payload["family_name"],
                         "is_admin": payload["is_admin"],
                         "is_rabbie": payload["is_rabbie"],
+                        "phone": payload["phone"],
+                        "email": payload["email"],
                     }
             except ExpiredSignatureError:
                 access_token_expired = True
@@ -46,6 +48,8 @@ class RefreshTokenMiddleware(BaseHTTPMiddleware):
                         "family_name": payload["family_name"],
                         "is_admin": payload["is_admin"],
                         "is_rabbie": payload["is_rabbie"],
+                        "phone": payload["phone"],
+                        "email": payload["email"],
                     }
 
                     new_access_token = generate_access_token(current_user)

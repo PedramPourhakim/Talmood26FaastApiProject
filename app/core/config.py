@@ -1,6 +1,9 @@
 from pydantic_settings import BaseSettings,SettingsConfigDict
 import secrets
 import os
+import uuid
+from zarinpal_utils.Config import Config
+
 
 class Settings(BaseSettings):
     SQLALCHEMY_DATABASE_URL: str = "sqlite:///:memory:"
@@ -20,8 +23,18 @@ class Settings(BaseSettings):
     MAIL_SSL_TLS : bool = False
     USE_CREDENTIALS : bool = True
     VALIDATE_CERTS : bool = True
+    MERCHANT_ID : str = uuid.uuid4()
+    SAND_BOX : bool
+    ZARIN_PAL_ACCESS_TOKEN : str
+    ZARIN_PAL_CALLBACK_URL : str
 
     model_config = SettingsConfigDict(env_file=".env")
 
 
 settings = Settings()
+
+zarinpal_config = Config(
+    merchant_id=settings.MERCHANT_ID,
+    access_token=settings.ZARIN_PAL_ACCESS_TOKEN,
+    sandbox=settings.SAND_BOX,
+)

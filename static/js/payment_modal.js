@@ -244,12 +244,27 @@ function resetPaymentForm() {
 
 }
 submitPaymentButton.addEventListener("click", submitPayment);
+function getSelectedPaymentAccount() {
+
+    const accountId = paymentAccountSlim.getSelected()[0];
+
+    for (const type of paymentTypes) {
+
+        const account = type.payment_accounts.find(a => a.id === accountId);
+
+        if (account) return account;
+    }
+
+    return null;
+}
 function buildPaymentPayload() {
-    return {
+    const account = getSelectedPaymentAccount();
+     return {
         person_id: currentUser.person_id,
-        payment_account_id: paymentAccountSlim.getSelected()[0],
+        payment_account_id: account.id,
+        payment_account_title: account.account_title,
         amount: getAmountValue(),
-        description: paymentDescriptionInput.value.trim(),
+        description: paymentDescriptionInput.value.trim()
     };
 }
 async function submitPayment() {

@@ -7,7 +7,8 @@ from sqlalchemy.orm import Session, joinedload
 from auth.jwt_auth import get_authenticated_user
 from core.database import get_db
 from payment.models import PaymentModel,PaymentStatusEnum
-
+from zarinpal import ZarinPal
+from core.config import zarinpal_config,settings
 
 router = APIRouter(tags=["payment"], prefix="/payments")
 
@@ -49,12 +50,31 @@ async def get_person_payments(user:dict = Depends(get_authenticated_user),
 async def create_new_payment(request: CreatePaymentSchema,
                                 user:dict = Depends(get_authenticated_user),
                                  db: Session = Depends(get_db)):
-    new_payment = PaymentModel(**request.model_dump())
+    new_payment = PaymentModel(amount=request.amount,
+                               description=request.description,
+                               payment_account_id=request.payment_account_id,
+                               person_id=request.person_id
+                               )
     db.add(new_payment)
     db.commit()
     db.refresh(new_payment)
+    payment_request = CreatePaymentRequestSchema(
+        amount=new_payment.amount,
+        description= f"{request.payment_account_title} : {new_payment.description}",
+        callback_url= settings.ZARIN_PAL_CALLBACK_URL,
+        mobile= user["phone"],
+        email= user["email"],
+    )
     return new_payment
 
+
+
+# def initiate_payment():
+#     try:
+#         zarinpal = ZarinPal(zarinpal_config)
+#         response = zarinpal.payments.create({
+#
+#         })
 
 @router.put(
     "/{payment_id}",

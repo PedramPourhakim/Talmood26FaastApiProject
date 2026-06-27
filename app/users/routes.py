@@ -65,6 +65,8 @@ async def first_step_login(request: UserLoginSchema,db: Session = Depends(get_db
             "family_name":user_obj.person.family_name,
             "is_admin":user_obj.person.is_admin,
             "is_rabbie":user_obj.person.is_rabbie,
+            "phone":user_obj.phone,
+            "email":user_obj.email,
         }),
         ex=300
     )

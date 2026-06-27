@@ -6,7 +6,7 @@ pyjwt~=2.12.1
 faker~=40.12.0
 flake8
 black
-pytest~=9.0.3
+pytest
 apscheduler
 fastapi-cache2[redis]
 aiohttp~=3.13.5
@@ -27,7 +27,7 @@ dnspython~=2.8.0
 idna~=3.11
 httpcore~=1.0.9
 httpx~=0.28.1
-anyio~=4.13.0
+anyio
 h11~=0.16.0
 attrs~=26.1.0
 redis~=4.6.0
@@ -66,3 +66,4 @@ email_validator
 sqladmin==0.26.0
 python-multipart
 wtforms_sqlalchemy
+zarinpal-py-sdk
