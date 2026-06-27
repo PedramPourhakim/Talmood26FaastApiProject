@@ -1,3 +1,4 @@
+import uuid
 from datetime import datetime
 from pydantic import BaseModel,Field,field_validator
 from payment.models import PaymentStatusEnum

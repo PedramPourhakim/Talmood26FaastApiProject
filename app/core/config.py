@@ -34,7 +34,7 @@ class Settings(BaseSettings):
 settings = Settings()
 
 zarinpal_config = Config(
-    merchant_id=settings.MERCHANT_ID,
+    merchant_id=str(uuid.uuid4()),
     access_token=settings.ZARIN_PAL_ACCESS_TOKEN,
     sandbox=settings.SAND_BOX,
 )

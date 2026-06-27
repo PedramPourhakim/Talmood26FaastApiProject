@@ -243,7 +243,9 @@ function resetPaymentForm() {
     paymentAccountSlim?.setSelected("");
 
 }
+
 submitPaymentButton.addEventListener("click", submitPayment);
+
 function getSelectedPaymentAccount() {
 
     const accountId = paymentAccountSlim.getSelected()[0];
@@ -257,9 +259,10 @@ function getSelectedPaymentAccount() {
 
     return null;
 }
+
 function buildPaymentPayload() {
     const account = getSelectedPaymentAccount();
-     return {
+    return {
         person_id: currentUser.person_id,
         payment_account_id: account.id,
         payment_account_title: account.account_title,
@@ -267,6 +270,7 @@ function buildPaymentPayload() {
         description: paymentDescriptionInput.value.trim()
     };
 }
+
 async function submitPayment() {
 
     if (!await validatePaymentForm())
@@ -289,15 +293,7 @@ async function submitPayment() {
         });
 
         const result = await response.json();
-
-        if (!response.ok) {
-
-            throw new Error(result.detail || "خطا در ثبت پرداخت");
-
-        }
-
-
-
+        window.location.href = result.payment_url;
         resetPaymentForm();
 
         closePaymentModalHandler();
@@ -305,8 +301,7 @@ async function submitPayment() {
             icon: "success",
             title: "پرداخت ثبت شد."
         });
-    }
-    catch (err) {
+    } catch (err) {
 
         await Swal.fire({
             icon: "error",
@@ -314,16 +309,5 @@ async function submitPayment() {
         });
 
     }
-    finally {
-
-    submitPaymentButton.disabled = false;
-
-    document.getElementById("submitPaymentText").classList.remove("hidden");
-    document.getElementById("submitPaymentLoading").classList.add("hidden");
-
-    resetPaymentForm();
-    // closePaymentModalHandler();
-
-}
 
 }

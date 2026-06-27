@@ -45,8 +45,7 @@ async def get_person_payments(user:dict = Depends(get_authenticated_user),
     }
 
 
-@router.post("", status_code=status.HTTP_201_CREATED,
-             response_model=ResponsePaymentSchema)
+@router.post("", status_code=status.HTTP_201_CREATED)
 async def create_new_payment(request: CreatePaymentSchema,
                                 user:dict = Depends(get_authenticated_user),
                                  db: Session = Depends(get_db)):
@@ -55,26 +54,41 @@ async def create_new_payment(request: CreatePaymentSchema,
                                payment_account_id=request.payment_account_id,
                                person_id=request.person_id
                                )
-    db.add(new_payment)
-    db.commit()
-    db.refresh(new_payment)
     payment_request = CreatePaymentRequestSchema(
         amount=new_payment.amount,
         description= f"{request.payment_account_title} : {new_payment.description}",
         callback_url= settings.ZARIN_PAL_CALLBACK_URL,
         mobile= user["phone"],
         email= user["email"],
+
     )
-    return new_payment
+    authority,payment_url = initiate_payment(payment_request)
+    new_payment.authority = authority
+    db.add(new_payment)
+    db.commit()
+    db.refresh(new_payment)
+    return JSONResponse({
+        "payment_url": payment_url
+    })
 
 
 
-# def initiate_payment():
-#     try:
-#         zarinpal = ZarinPal(zarinpal_config)
-#         response = zarinpal.payments.create({
-#
-#         })
+def initiate_payment(payment_request: CreatePaymentRequestSchema):
+    try:
+        zarinpal = ZarinPal(zarinpal_config)
+        response = zarinpal.payments.create(
+            payment_request.model_dump()
+        )
+
+        if "data" in response and "authority" in response["data"]:
+            authority = response["data"]["authority"]
+            payment_url = zarinpal.payments.generate_payment_url(authority)
+            return authority, payment_url
+        else:
+            print("Authority not found in response.")
+    except Exception as e:
+        print("Error during payment creation:", e)
+
 
 @router.put(
     "/{payment_id}",
