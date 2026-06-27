@@ -1,5 +1,5 @@
 from core.database import Base
-from sqlalchemy import Column, String, DateTime, ForeignKey, BigInteger
+from sqlalchemy import Column, String, DateTime, ForeignKey, BigInteger,Integer
 from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
 from enum import Enum
@@ -22,6 +22,8 @@ class PaymentModel(Base):
     description = Column(String(500))
     authority = Column(String(255))
     ref_id = Column(String(255))
+    card_pan = Column(String(25))
+    fee = Column(Integer())
     status = Column(
         SqlEnum(PaymentStatusEnum),
         nullable=False,

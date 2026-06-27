@@ -240,21 +240,14 @@ class="group rounded-3xl border border-slate-200 bg-white shadow-sm transition-a
         <div>
 
             <div class="text-gray-500 text-sm">
-
                 مبلغ پرداخت
-
             </div>
 
             <div class="mt-2 text-3xl font-extrabold text-blue-900">
-
                 ${Number(payment.amount).toLocaleString("fa-IR")}
-
                 <span class="text-base font-medium">
-
                     تومان
-
                 </span>
-
             </div>
 
         </div>
@@ -263,34 +256,27 @@ class="group rounded-3xl border border-slate-200 bg-white shadow-sm transition-a
 
     </div>
 
-    <div
-    class="mt-7 grid md:grid-cols-2 gap-5">
+    <div class="mt-7 grid md:grid-cols-2 gap-5">
+
+        ${buildInfoItem("🏦", "صندوق", payment.payment_account.account_title)}
+
+        ${buildInfoItem("📅", "تاریخ ثبت", formatDate(payment.creation_date))}
+
+        ${buildInfoItem("📝", "توضیحات", payment.description || "-")}
 
         ${buildInfoItem(
-        "🏦",
-        "صندوق",
-        payment.payment_account.account_title
-    )}
+            "✅",
+            "تاریخ پرداخت",
+            payment.paid_at ? formatDate(payment.paid_at) : "-"
+        )}
 
-        ${buildInfoItem(
-        "📅",
-        "تاریخ ثبت",
-        formatDate(payment.creation_date)
-    )}
+        ${payment.ref_id
+            ? buildInfoItem("🧾", "کد پیگیری", payment.ref_id)
+            : ""}
 
-        ${buildInfoItem(
-        "📝",
-        "توضیحات",
-        payment.description || "-"
-    )}
-
-        ${buildInfoItem(
-        "✅",
-        "تاریخ پرداخت",
-        payment.paid_at
-            ? formatDate(payment.paid_at)
-            : "-"
-    )}
+        ${payment.card_pan
+            ? buildInfoItem("💳", "شماره کارت", payment.card_pan)
+            : ""}
 
     </div>
 
@@ -299,7 +285,6 @@ class="group rounded-3xl border border-slate-200 bg-white shadow-sm transition-a
 </article>
 
 `;
-
 }
 
 

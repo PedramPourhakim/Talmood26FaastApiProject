@@ -10,8 +10,8 @@ from payment.models import PaymentModel,PaymentStatusEnum
 from zarinpal import ZarinPal
 from core.config import zarinpal_config,settings
 
-router = APIRouter(tags=["payment"], prefix="/payments")
 
+router = APIRouter(tags=["payment"], prefix="/payments")
 
 @cache(60)
 @router.get("/get_person_payments",status_code=status.HTTP_200_OK,
@@ -88,6 +88,9 @@ def initiate_payment(payment_request: CreatePaymentRequestSchema):
             print("Authority not found in response.")
     except Exception as e:
         print("Error during payment creation:", e)
+
+
+
 
 
 @router.put(

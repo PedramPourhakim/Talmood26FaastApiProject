@@ -1,22 +1,28 @@
+from datetime import datetime
 import json
 from fastapi.templating import Jinja2Templates
-from fastapi import APIRouter,Request,Depends,HTTPException,status,Response
-from fastapi.responses import JSONResponse
+from fastapi import APIRouter,Request,Depends,HTTPException,status,Response,Query
+from fastapi.responses import JSONResponse,RedirectResponse
+from urllib.parse import urlencode
 from sqlalchemy.orm import Session
 from core.database import get_db
 from weeklyParashah.models import ParashaModel
 from person.schemas import CreatePersonSchema
 from person.models import PersonModel
 from users.models import UserModel
+from payment.models import PaymentModel,PaymentStatusEnum
 from sqlalchemy import or_
 from pydantic import BaseModel,Field,EmailStr
 from redis import asyncio as aioredis
 from fastapi_cache.backends.redis import RedisBackend
 from fastapi_cache import FastAPICache
-from core.config import settings
+from core.config import settings,zarinpal_config
+import logging
+from zarinpal import ZarinPal
 
 templates = Jinja2Templates(directory="templates")
 router = APIRouter(tags=["index_page"])
+logger = logging.getLogger("payment")
 
 
 def inject_user(request: Request):
@@ -80,6 +86,86 @@ async def get_parasha_detail(request:Request,parasha_id:str,db: Session = Depend
         name="parasha_detail.html",
         context={"parasha": parasha},
     )
+@router.get("/payment_callback", status_code=status.HTTP_200_OK)
+async def payment_callback(Authority: str = Query(...),
+                           Status: str=Query(...),
+                           db: Session = Depends(get_db)):
+    payment = (
+        db.query(PaymentModel)
+        .filter(PaymentModel.authority == Authority)
+        .one_or_none()
+    )
+
+    if payment is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail="Payment not found")
+    if Status == "NOK":
+        payment.status = PaymentStatusEnum.FAILED
+        db.commit()
+        params = urlencode({
+            "payment": "failed"
+        })
+        return RedirectResponse(
+            url=f"/?{params}",
+            status_code=303
+        )
+    elif Status == "OK":
+        verify_response_code,reference_id,card_pan,fee = await verify_payment(payment.authority,payment.amount)
+        if verify_response_code == 100:
+            payment.status = PaymentStatusEnum.PAID
+            payment.ref_id = reference_id
+            payment.card_pan = card_pan
+            payment.fee = fee
+            payment.paid_at = datetime.now()
+            db.commit()
+            params = urlencode({
+                "payment": "success",
+                "ref_id": payment.ref_id
+            })
+            return RedirectResponse(
+                url=f"/?{params}",
+                status_code=303
+            )
+        elif verify_response_code == 101:
+            params = urlencode({
+                "payment": "verified",
+                "ref_id": payment.ref_id
+            })
+
+            return RedirectResponse(
+                url=f"/?{params}",
+                status_code=303
+            )
+        else:
+            return JSONResponse({
+                "success": False,
+                "message":"پرداخت ناموفق بوده است !"
+            })
+    else:
+        return JSONResponse({
+            "success": False,
+            "message" : "پرداخت ناموفق"
+        })
+
+
+
+async def verify_payment(authority,amount):
+    try:
+        zarinpal = ZarinPal(zarinpal_config)
+        response = zarinpal.verifications.verify({
+            "authority": authority,
+            "amount":amount
+        })
+        if response["data"]["code"] == 100:
+            reference_id = response["data"]["ref_id"]
+            card_pan = response["data"]["card_pan"]
+            fee = response["data"]["fee"]
+            return response["data"]["code"], reference_id, card_pan, fee
+        elif response["data"]["code"] == 101:
+            return response["data"]["code"],None,None,None
+        else:
+            return response["data"]["code"],None,None,None
+    except Exception as e:
+        logger.error(f"Payment Verification Failed: {e}")
 
 class UserRegisterBaseSchema(BaseModel):
     email: EmailStr

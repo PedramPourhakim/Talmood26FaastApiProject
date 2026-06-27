@@ -31,6 +31,8 @@ class ResponsePaymentSchema(PaymentSchema):
     payment_account : PaymentAccountResponseSchema = Field()
     authority: str | None = Field(description="Authority from zarin pal")
     ref_id: str | None = Field(description="reference id of the payment")
+    card_pan: str | None = Field(description="card pan of the payment")
+    fee: int | None = Field(description="fee of the payment")
     paid_at : datetime | None = Field(description="Date of paid")
 
 
