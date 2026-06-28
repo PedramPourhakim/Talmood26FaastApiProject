@@ -28,6 +28,8 @@ from core.config import settings
 from fastapi_cache import FastAPICache
 from fastapi_cache.backends.redis import RedisBackend
 from redis import asyncio as aioredis
+from contextlib import asynccontextmanager
+from core.redis import redis
 # app = FastAPI(docs_url=None,
 #     swagger_ui_oauth2_redirect_url=None)
 
@@ -42,7 +44,17 @@ StorageManager.add_storage("parasha_storage", parasha_container)
 # اگر خواستی default هم داشته باشی (اختیاری)
 default_container = LocalStorageDriver("static").get_container(".")
 StorageManager.add_storage("default", default_container)
-app = FastAPI(docs_url="/swagger", redoc_url=None)
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    FastAPICache.init(
+        RedisBackend(redis),
+        prefix="fastapi-cache"
+    )
+
+    yield
+
+    await redis.close()
+app = FastAPI(lifespan=lifespan, docs_url="/swagger", redoc_url=None)
 
 
 UPLOAD_DIR = "static/parasha_images"
@@ -83,9 +95,7 @@ app.include_router(payment_router)
 app.add_middleware(SwaggerMiddleware)
 app.add_middleware(RefreshTokenMiddleware)
 
-redis = aioredis.from_url(settings.REDIS_URL)
-cache_backend = RedisBackend(redis)
-FastAPICache.init(cache_backend,prefix="fastapi-cache")
+
 
 
 

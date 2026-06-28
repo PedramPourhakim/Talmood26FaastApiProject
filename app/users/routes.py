@@ -19,14 +19,10 @@ decode_refresh_token
 import random
 from typing import List
 from utils.email_util import send_email
-from redis import asyncio as aioredis
-from fastapi_cache.backends.redis import RedisBackend
-from fastapi_cache import FastAPICache
+from core.redis import redis
 router = APIRouter(tags=["users"],prefix="/users")
 
-redis = aioredis.from_url(settings.REDIS_URL)
-cache_backend = RedisBackend(redis)
-FastAPICache.init(cache_backend,prefix="fastapi-cache")
+
 
 @cache(expire=30)
 @router.get("/",

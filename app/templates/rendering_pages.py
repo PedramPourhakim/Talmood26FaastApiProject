@@ -1,4 +1,4 @@
-from datetime import datetime
+import datetime
 import json
 from fastapi.templating import Jinja2Templates
 from fastapi import APIRouter,Request,Depends,HTTPException,status,Response,Query
@@ -115,7 +115,7 @@ async def payment_callback(Authority: str = Query(...),
             payment.ref_id = reference_id
             payment.card_pan = card_pan
             payment.fee = fee
-            payment.paid_at = datetime.now()
+            payment.paid_at = datetime.datetime.now(datetime.UTC)
             db.commit()
             params = urlencode({
                 "payment": "success",

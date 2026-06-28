@@ -53,8 +53,10 @@ services:
     container_name: backend_talmood26
     restart: always
     depends_on:
-      - db_talmood26
-      - redis_talmood26
+      db_talmood26:
+          condition: service_healthy
+      redis_talmood26:
+          condition: service_healthy
     environment:
       SQLALCHEMY_DATABASE_URL: postgresql://postgres:postgres@db_talmood26:5432/postgres
       JWT_SECRET_KEY: Testkjfejdfqwejd;qwekd;qwkd;qwekd;qwkd;qwkdjfjwefj
@@ -63,7 +65,7 @@ services:
       UPLOAD_URL_PREFIX: /static/parasha_images
     ports:
       - "8000:8000"
-    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload --log-level debug
+    command: uvicorn main:app --host 0.0.0.0 --port 8000  --log-level debug
     volumes:
       - ./app:/usr/src/core
       - ./static:/usr/src/core/static

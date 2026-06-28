@@ -4,7 +4,7 @@ import Swal from 'sweetalert2';
 const currentUser = window.currentUser;
 let currentPage = 1;
 
-const pageSize = 5;
+const pageSize = 1;
 
 let currentFilter = "";
 

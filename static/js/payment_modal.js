@@ -179,8 +179,12 @@ function handlePaymentTypeChange(value) {
 paymentAmountInput.addEventListener("input", formatAmountInput);
 
 function formatAmountInput() {
-    let value = this.value.replace(/\D/g, "");
-    this.value = value ? Number(value).toLocaleString("en-US") : "";
+    let value = Number(this.value.replace(/\D/g, ""));
+
+
+    this.value = value
+        ? value.toLocaleString("en-US")
+        : "";
 }
 
 function getAmountValue() {
@@ -211,12 +215,12 @@ async function validatePaymentForm() {
         paymentAccountSlim.open();
         return false;
     }
-
-    if (getAmountValue() <= 0) {
+    const MIN_AMOUNT = 26000;
+    if (getAmountValue() <= MIN_AMOUNT) {
 
         await Swal.fire({
             icon: "warning",
-            title: "مبلغ معتبر وارد کنید."
+            title: "حداقل مبلغ پرداخت ۲۶,۰۰۰ تومان است."
         });
         paymentAmountInput.focus();
         return false;

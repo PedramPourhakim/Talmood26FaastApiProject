@@ -8,7 +8,7 @@ from paymentAccount.schemas import PaymentAccountResponseSchema
 class PaymentSchema(BaseModel):
     person_id: str = Field(..., description="Unique identifier of the Person Who wants to pay")
     payment_account_id : str = Field(..., description="Unique identifier of the Payment Account")
-    amount: int = Field(..., description="Amount to be paid")
+    amount: int = Field(..., gt=26000,description="Amount to be paid")
     status : PaymentStatusEnum = Field(PaymentStatusEnum.PENDING, description="Payment Status")
     description : str = Field(description="Payment Description")
 

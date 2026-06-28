@@ -50,6 +50,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     try {
 
         const res = await fetch("/person/get_rabbies");
+        if (!res.ok) {
+            throw new Error(await res.text());
+        }
+
         const data = await res.json();
 
         if (!data.length)
@@ -79,7 +83,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                         modal.classList.remove("hidden");
                     } else {
-                         Swal.fire({
+                        Swal.fire({
                             title: "خطا",
                             text: "جهت پرسش و پاسخ ورود/ثبت نام الزامی میباشد",
                             icon: "error",
