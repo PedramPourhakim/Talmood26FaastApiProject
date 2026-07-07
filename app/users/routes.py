@@ -20,6 +20,7 @@ import random
 from typing import List
 from utils.email_util import send_email
 from core.redis import redis
+from paymentAccount.models import PaymentAccountModel
 router = APIRouter(tags=["users"],prefix="/users")
 
 
@@ -51,6 +52,12 @@ async def first_step_login(request: UserLoginSchema,db: Session = Depends(get_db
     user_obj.verification_code = random.randint(1000,9999)
     db.commit()
     db.refresh(user_obj)
+    payment_account_ids = (
+        db.query(PaymentAccountModel.id)
+        .filter(PaymentAccountModel.person_id == user_obj.person.id)
+        .all()
+    )
+    payment_account_ids = [item.id for item in payment_account_ids]
     await redis.set(
         f"login_code:{user_obj.email}",
         json.dumps({
@@ -63,6 +70,7 @@ async def first_step_login(request: UserLoginSchema,db: Session = Depends(get_db
             "is_rabbie":user_obj.person.is_rabbie,
             "phone":user_obj.phone,
             "email":user_obj.email,
+            "payment_account_ids": payment_account_ids
         }),
         ex=300
     )

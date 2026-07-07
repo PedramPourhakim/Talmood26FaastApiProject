@@ -24,16 +24,7 @@ class RefreshTokenMiddleware(BaseHTTPMiddleware):
                 payload = decode_token(access_token)
 
                 if payload.get("type") == "access":
-                    current_user = {
-                        "user_id": payload["user_id"],
-                        "person_id": payload["person_id"],
-                        "name": payload["name"],
-                        "family_name": payload["family_name"],
-                        "is_admin": payload["is_admin"],
-                        "is_rabbie": payload["is_rabbie"],
-                        "phone": payload["phone"],
-                        "email": payload["email"],
-                    }
+                    current_user = get_current_user_dict(payload)
             except ExpiredSignatureError:
                 access_token_expired = True
         elif refresh_token:
@@ -41,16 +32,7 @@ class RefreshTokenMiddleware(BaseHTTPMiddleware):
                 payload = decode_token(refresh_token)
 
                 if payload.get("type") == "refresh":
-                    current_user = {
-                        "user_id": payload["user_id"],
-                        "person_id": payload["person_id"],
-                        "name": payload["name"],
-                        "family_name": payload["family_name"],
-                        "is_admin": payload["is_admin"],
-                        "is_rabbie": payload["is_rabbie"],
-                        "phone": payload["phone"],
-                        "email": payload["email"],
-                    }
+                    current_user = get_current_user_dict(payload)
 
                     new_access_token = generate_access_token(current_user)
             except Exception as e:
@@ -71,6 +53,22 @@ class RefreshTokenMiddleware(BaseHTTPMiddleware):
             )
 
         return response
+
+def get_current_user_dict(payload):
+    payment_account_ids = payload.get("payment_account_ids", [])
+    return {
+        "user_id": payload["user_id"],
+        "person_id": payload["person_id"],
+        "name": payload["name"],
+        "family_name": payload["family_name"],
+        "is_admin": payload["is_admin"],
+        "is_rabbie": payload["is_rabbie"],
+        "phone": payload["phone"],
+        "email": payload["email"],
+        "payment_account_ids": payload["payment_account_ids"],
+        "has_payment_accounts": len(payment_account_ids) > 0
+    }
+
 
 class AdminAuth(AuthenticationBackend):
 

@@ -105,3 +105,4 @@ async def get_rabbies(db: Session = Depends(get_db)):
         ]
     except Exception as e:
         logger.error(e)
+

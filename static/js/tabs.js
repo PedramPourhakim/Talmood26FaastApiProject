@@ -1,9 +1,11 @@
 import { loadQAs } from "./qa";
-import {loadPersonPayments} from "./payment_tab"
-const currentuser = window.currentUser;
-import Swal from 'sweetalert2';
-document.querySelectorAll(".tab-btn").forEach(btn => {
+import { loadPersonPayments } from "./payment_tab";
+import { loadPaymentReport } from "./payment_account_report_tab.js";
+import Swal from "sweetalert2";
 
+const currentuser = window.currentUser;
+
+document.querySelectorAll(".tab-btn").forEach(btn => {
 
     btn.addEventListener("click", async () => {
 
@@ -22,6 +24,7 @@ document.querySelectorAll(".tab-btn").forEach(btn => {
                 );
 
                 x.classList.add("text-gray-500");
+
             });
 
         document
@@ -37,28 +40,61 @@ document.querySelectorAll(".tab-btn").forEach(btn => {
         );
 
         if (btn.dataset.tab === "qa-tab") {
+
             if (currentuser) {
+
                 await loadQAs();
+
+            } else {
+
+                await Swal.fire({
+                    title: "خطا",
+                    text: "ورود/ثبت نام الزامی می‌باشد",
+                    icon: "error"
+                });
+
             }
-            else {
-                  await Swal.fire({
-                        title: "خطا",
-                        text: " ورود/ثبت نام الزامی میباشد",
-                        icon: "error"
-                    });
-            }
+
         }
+
         else if (btn.dataset.tab === "payments-tab") {
+
             if (currentuser) {
+
                 await loadPersonPayments();
+
+            } else {
+
+                await Swal.fire({
+                    title: "خطا",
+                    text: "ورود/ثبت نام الزامی می‌باشد",
+                    icon: "error"
+                });
+
             }
-            else {
-                  await Swal.fire({
-                        title: "خطا",
-                        text: " ورود/ثبت نام الزامی میباشد",
-                        icon: "error"
-                    });
+
+        }
+
+        else if (btn.dataset.tab === "payment-report-tab") {
+
+            if (
+                currentuser &&
+                currentuser.payment_account_ids &&
+                currentuser.payment_account_ids.length > 0
+            ) {
+
+                await loadPaymentReport();
+
+            } else {
+
+                await Swal.fire({
+                    title: "خطا",
+                    text: "شما مجوز مشاهده گزارش صندوق را ندارید.",
+                    icon: "error"
+                });
+
             }
+
         }
 
     });

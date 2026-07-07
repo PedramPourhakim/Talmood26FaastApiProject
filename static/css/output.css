@@ -465,6 +465,8 @@
     --color-red-500: oklch(63.7% 0.237 25.331);
     --color-red-600: oklch(57.7% 0.245 27.325);
     --color-red-700: oklch(50.5% 0.213 27.518);
+    --color-orange-100: oklch(95.4% 0.038 75.164);
+    --color-orange-700: oklch(55.3% 0.195 38.402);
     --color-yellow-100: oklch(97.3% 0.071 103.193);
     --color-yellow-400: oklch(85.2% 0.199 91.936);
     --color-yellow-500: oklch(79.5% 0.184 86.047);
@@ -800,6 +802,9 @@
   }
   .mt-8 {
     margin-top: calc(var(--spacing) * 8);
+  }
+  .mt-10 {
+    margin-top: calc(var(--spacing) * 10);
   }
   .mt-16 {
     margin-top: calc(var(--spacing) * 16);
@@ -1195,6 +1200,9 @@
   .bg-green-600 {
     background-color: var(--color-green-600);
   }
+  .bg-orange-100 {
+    background-color: var(--color-orange-100);
+  }
   .bg-red-50 {
     background-color: var(--color-red-50);
   }
@@ -1423,6 +1431,9 @@
     --tw-tracking: var(--tracking-widest);
     letter-spacing: var(--tracking-widest);
   }
+  .break-all {
+    word-break: break-all;
+  }
   .whitespace-pre-wrap {
     white-space: pre-wrap;
   }
@@ -1461,6 +1472,9 @@
   }
   .text-green-700 {
     color: var(--color-green-700);
+  }
+  .text-orange-700 {
+    color: var(--color-orange-700);
   }
   .text-red-600 {
     color: var(--color-red-600);
@@ -1809,6 +1823,11 @@
       --tw-ring-color: var(--color-blue-500);
     }
   }
+  .focus\:ring-blue-800 {
+    &:focus {
+      --tw-ring-color: var(--color-blue-800);
+    }
+  }
   .focus\:outline-none {
     &:focus {
       --tw-outline-style: none;
@@ -1891,6 +1910,11 @@
       width: 450px;
     }
   }
+  .lg\:grid-cols-4 {
+    @media (width >= 64rem) {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
   .lg\:flex-row {
     @media (width >= 64rem) {
       flex-direction: row;
@@ -1920,6 +1944,11 @@
     @media (width >= 64rem) {
       font-size: var(--text-6xl);
       line-height: var(--tw-leading, var(--text-6xl--line-height));
+    }
+  }
+  .xl\:grid-cols-3 {
+    @media (width >= 80rem) {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
     }
   }
 }

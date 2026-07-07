@@ -37,6 +37,7 @@ def get_authenticated_user(
             "is_rabbie": payload["is_rabbie"],
             "phone": payload["phone"],
             "email": payload["email"],
+            "payment_account_ids": payload["payment_account_ids"],
         }
         return current_user
     except InvalidSignatureError:
@@ -93,6 +94,7 @@ def generate_access_token(
         "family_name": user_data["family_name"],
         "is_admin": user_data["is_admin"],
         "is_rabbie": user_data["is_rabbie"],
+        "payment_account_ids": user_data["payment_account_ids"],
         "phone": user_data["phone"],
         "email": user_data["email"],
         "iat": int(now.timestamp()),
@@ -120,6 +122,7 @@ def generate_refresh_token(
         "person_id": str(user_data["person_id"]),
         "name": user_data["name"],
         "family_name": user_data["family_name"],
+        "payment_account_ids": user_data["payment_account_ids"],
         "is_admin": user_data["is_admin"],
         "is_rabbie": user_data["is_rabbie"],
         "phone": user_data["phone"],

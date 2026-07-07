@@ -1,14 +1,14 @@
 services:
-  db_talmood26:
-    image: postgres:latest
-    container_name: db_talmood26
+  db-talmood26:
+    image: postgres:17
+    container_name: db-talmood26
     restart: always
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: postgres
     volumes:
-      - ./postgres:/var/lib/postgresql
+      - postgres-data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "postgres", "-d", "postgres"]
       interval: 10s
@@ -18,9 +18,9 @@ services:
     ports:
       - "5432:5432"
 
-  redis_talmood26:
+  redis-talmood26:
     image: redis:7-alpine
-    container_name: redis_talmood26
+    container_name: redis-talmood26
     restart: always
     ports:
       - "6379:6379"
@@ -46,21 +46,21 @@ services:
       volumes:
         - smtp4dev-data:/smtp4dev
 
-  backend_talmood26:
+  backend-talmood26:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: backend_talmood26
+    container_name: backend-talmood26
     restart: always
     depends_on:
-      db_talmood26:
+      db-talmood26:
           condition: service_healthy
-      redis_talmood26:
+      redis-talmood26:
           condition: service_healthy
     environment:
-      SQLALCHEMY_DATABASE_URL: postgresql://postgres:postgres@db_talmood26:5432/postgres
+      SQLALCHEMY_DATABASE_URL: postgresql://postgres:postgres@db-talmood26:5432/postgres
       JWT_SECRET_KEY: Testkjfejdfqwejd;qwekd;qwkd;qwekd;qwkd;qwkdjfjwefj
-      REDIS_URL: redis://redis_talmood26:6379
+      REDIS_URL: redis://redis-talmood26:6379
       UPLOAD_DIR: /usr/src/core/static/parasha_images
       UPLOAD_URL_PREFIX: /static/parasha_images
     ports:
@@ -72,9 +72,12 @@ services:
 
 volumes:
   smtp4dev-data:
+  postgres-data:
 # docker-compose up --build -d
 # docker exec -it backend_talmood26 bash (For running commands in docker terminal)
 # docker-compose exec backend_talmood26 alembic revision --autogenerate -m "add person table"
 # docker-compose exec backend_talmood26 alembic upgrade head
-# docker-compose up -d db_talmood26 redis_talmood26
+# docker-compose up -d db_talmood26 redis-talmood26
 # docker exec -it db_talmood26 psql -U postgres -d postgres -c "TRUNCATE TABLE person RESTART IDENTITY CASCADE;"
+#docker exec db-talmood26 pg_dump -U postgres postgres > backup.sql
+#docker exec db-talmood26 pg_dump -U postgres postgres > backup.sql

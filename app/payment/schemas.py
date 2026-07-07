@@ -8,7 +8,7 @@ from paymentAccount.schemas import PaymentAccountResponseSchema
 class PaymentSchema(BaseModel):
     person_id: str = Field(..., description="Unique identifier of the Person Who wants to pay")
     payment_account_id : str = Field(..., description="Unique identifier of the Payment Account")
-    amount: int = Field(..., gt=26000,description="Amount to be paid")
+    amount: int = Field(..., gt=26000,lt=2000000000,description="Amount to be paid")
     status : PaymentStatusEnum = Field(PaymentStatusEnum.PENDING, description="Payment Status")
     description : str = Field(description="Payment Description")
 
@@ -50,4 +50,26 @@ class CreatePaymentRequestSchema(BaseModel):
     mobile: str | None= Field(description="Mobile Number")
     email: str | None= Field(description="Email Address")
     currency: str = Field(default="IRT")
+
+
+
+
+class PaymentReportItem(BaseModel):
+    payment_id: str
+    amount: int
+    status: str
+    authority: str | None
+    ref_id: str | None
+    card_pan: str | None
+    fee: int | None
+    creation_date: datetime
+    paid_at: datetime | None
+
+    payment_account_id: str
+    account_title: str
+    sheba_number: str
+
+    person_id: str
+    name: str
+    family_name: str
 

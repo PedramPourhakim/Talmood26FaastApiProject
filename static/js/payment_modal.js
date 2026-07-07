@@ -216,12 +216,21 @@ async function validatePaymentForm() {
         return false;
     }
     const MIN_AMOUNT = 26000;
+    const MAX_AMOUNT = 2000000000;
     if (getAmountValue() <= MIN_AMOUNT) {
 
         await Swal.fire({
             icon: "warning",
             title: "حداقل مبلغ پرداخت ۲۶,۰۰۰ تومان است."
         });
+        paymentAmountInput.focus();
+        return false;
+    }
+    else if (getAmountValue() > MAX_AMOUNT) {
+        await Swal.fire({
+            icon: "warning",
+            title: "Maximum amount : 2 Miliard"
+        })
         paymentAmountInput.focus();
         return false;
     }

@@ -20,7 +20,13 @@
                 data-tab="payments-tab">
             پرداخت‌های من
         </button>
-
+        {% if current_user and current_user.payment_account_ids %}
+        <button
+                class="tab-btn px-6 py-3 cursor-pointer text-lg font-semibold text-gray-500"
+                data-tab="payment-report-tab">
+            گزارش پرداخت صندوق‌ها
+        </button>
+        {% endif %}
     </div>
 
 
@@ -32,5 +38,8 @@
 
     {% include "partials/payments_tab.html" %}
 
+    {% if current_user and current_user.has_payment_accounts %}
+    {% include "partials/payment_report_tab.html" %}
+    {% endif %}
 
 </section>

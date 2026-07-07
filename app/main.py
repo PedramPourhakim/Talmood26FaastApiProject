@@ -30,6 +30,9 @@ from fastapi_cache.backends.redis import RedisBackend
 from redis import asyncio as aioredis
 from contextlib import asynccontextmanager
 from core.redis import redis
+import asyncio
+from sqlalchemy import text
+from sqlalchemy.exc import OperationalError
 # app = FastAPI(docs_url=None,
 #     swagger_ui_oauth2_redirect_url=None)
 
@@ -44,6 +47,25 @@ StorageManager.add_storage("parasha_storage", parasha_container)
 # اگر خواستی default هم داشته باشی (اختیاری)
 default_container = LocalStorageDriver("static").get_container(".")
 StorageManager.add_storage("default", default_container)
+# async def wait_for_database(max_retries=20, delay=3):
+#     for attempt in range(max_retries):
+#         try:
+#             with engine.connect() as conn:
+#                 conn.execute(text("SELECT 1"))
+#
+#             print("✅ PostgreSQL is ready.")
+#             return
+#
+#         except OperationalError:
+#             print(
+#                 f"⏳ Waiting for PostgreSQL "
+#                 f"({attempt + 1}/{max_retries})..."
+#             )
+#
+#             if attempt == max_retries - 1:
+#                 raise
+#
+#             await asyncio.sleep(delay)
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     FastAPICache.init(
@@ -66,6 +88,7 @@ admin = Admin(app,engine,
     authentication_backend=AdminAuth(
         secret_key=settings.JWT_SECRET_KEY
     ))
+# admin = Admin(app,engine)
 admin.add_view(PersonView)
 admin.add_view(ParashaView)
 admin.add_view(UserView)

@@ -1,0 +1,124 @@
+<!-- Payment Report -->
+
+<div id="payment-report-tab" class="tab-content hidden">
+
+    <!-- Filters -->
+    <div class="bg-white rounded-3xl shadow-xl p-6 mb-8">
+
+        <div class="flex flex-wrap gap-3 mb-6">
+
+            <button
+                    class="payment-report-filter active cursor-pointer rounded-full px-5 py-2 bg-blue-900 text-white transition"
+                    data-status="">
+                همه
+            </button>
+
+            <button
+                    class="payment-report-filter cursor-pointer rounded-full px-5 py-2 bg-gray-100 text-gray-700 hover:bg-gray-200 transition"
+                    data-status="paid">
+                موفق
+            </button>
+
+            <button
+                    class="payment-report-filter cursor-pointer rounded-full px-5 py-2 bg-gray-100 text-gray-700 hover:bg-gray-200 transition"
+                    data-status="pending">
+                در انتظار
+            </button>
+
+            <button
+                    class="payment-report-filter cursor-pointer rounded-full px-5 py-2 bg-gray-100 text-gray-700 hover:bg-gray-200 transition"
+                    data-status="failed">
+                ناموفق
+            </button>
+
+            <button
+                    class="payment-report-filter cursor-pointer rounded-full px-5 py-2 bg-gray-100 text-gray-700 hover:bg-gray-200 transition"
+                    data-status="cancelled">
+                لغو شده
+            </button>
+
+            <button
+                    class="payment-report-filter cursor-pointer rounded-full px-5 py-2 bg-gray-100 text-gray-700 hover:bg-gray-200 transition"
+                    data-status="expired">
+                منقضی شده
+            </button>
+
+        </div>
+
+        <div class="grid lg:grid-cols-4 md:grid-cols-2 gap-4">
+
+            <input
+                    aria-label=""
+                    id="paymentReportSearch"
+                    type="text"
+                    placeholder="نام یا نام خانوادگی پرداخت کننده..."
+                    class="rounded-2xl border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-800">
+
+            <input
+                    aria-label=""
+                    id="paymentReportFromDate"
+                    type="date"
+                    class="rounded-2xl border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-800">
+
+            <input
+                    aria-label=""
+                    id="paymentReportToDate"
+                    type="date"
+                    class="rounded-2xl border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-800">
+
+            <select
+                    aria-label=""
+                    id="paymentReportSort"
+                    class="rounded-2xl border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-800">
+
+                <option value="desc">
+                    جدیدترین
+                </option>
+
+                <option value="asc">
+                    قدیمی‌ترین
+                </option>
+
+            </select>
+
+        </div>
+
+    </div>
+
+
+    <!-- Report -->
+
+    <div class="bg-white rounded-3xl shadow-xl p-8">
+
+        <div class="flex flex-wrap items-center justify-between gap-3 mb-8">
+
+            <div>
+
+                <h2 class="text-2xl font-bold text-blue-900">
+                    گزارش پرداخت‌های صندوق
+                </h2>
+
+<!--                <p-->
+<!--                        id="paymentReportCounter"-->
+<!--                        class="text-gray-500 mt-2">-->
+<!--                </p>-->
+
+            </div>
+
+        </div>
+
+        <div
+                id="paymentReportContainer"
+                class="grid gap-6">
+
+        </div>
+
+        <div
+                id="paymentReportPagination"
+                class="mt-10 flex items-center justify-center gap-4">
+
+        </div>
+
+    </div>
+
+</div>
