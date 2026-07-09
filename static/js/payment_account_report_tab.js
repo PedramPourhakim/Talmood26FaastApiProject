@@ -1,3 +1,41 @@
+
+
+import * as picker from
+"persian-datepicker-element/dist/persian-datepicker-element.min.esm.js";
+
+window.__picker = picker;
+
+
+const fromPicker =
+    document.getElementById("paymentReportFromDate");
+
+const toPicker =
+    document.getElementById("paymentReportToDate");
+
+fromPicker.addEventListener("change", (e) => {
+
+    const g = e.detail.gregorian;
+
+    paymentReportState.fromDate =
+        `${g[0]}-${String(g[1]).padStart(2,"0")}-${String(g[2]).padStart(2,"0")}`;
+
+    resetReportCursor();
+
+    loadPaymentReport();
+
+});
+toPicker.addEventListener("change", (e) => {
+
+    const g = e.detail.gregorian;
+
+    paymentReportState.toDate =
+        `${g[0]}-${String(g[1]).padStart(2,"0")}-${String(g[2]).padStart(2,"0")}`;
+
+    resetReportCursor();
+
+    loadPaymentReport();
+
+});
 const paymentReportContainer =
     document.getElementById("paymentReportContainer");
 
@@ -7,7 +45,7 @@ const paymentReportPagination =
 const paymentReportState = {
 
     pageSize: 1,
-
+    currentPage: 1,
     cursorDate: null,
     cursorId: null,
 
@@ -111,7 +149,7 @@ export async function loadPaymentReport() {
             `/payments/payment-report?${params.toString()}`,
             {
                 credentials: "include",
-                method:"Get"
+                method: "Get"
             }
         );
 
@@ -197,14 +235,11 @@ function renderReportPagination() {
     paymentReportPagination.innerHTML = `
 
 <button
-
 id="previousPaymentReport"
-
-class="cursor-pointer px-4 py-2 rounded-xl border border-gray-300
+class="cursor-pointer px-4 py-2 rounded-xl border border-gray-300 hover:bg-gray-100 transition
 ${paymentReportState.previousCursors.length === 0
         ? "opacity-50 cursor-not-allowed"
         : ""}"
-
 ${paymentReportState.previousCursors.length === 0
         ? "disabled"
         : ""}>
@@ -213,15 +248,19 @@ ${paymentReportState.previousCursors.length === 0
 
 </button>
 
+<div class="text-gray-700 font-semibold">
+
+صفحه
+${paymentReportState.currentPage.toLocaleString("fa-IR")}
+
+</div>
+
 <button
-
 id="nextPaymentReport"
-
-class="cursor-pointer px-4 py-2 rounded-xl border border-gray-300
+class="cursor-pointer px-4 py-2 rounded-xl border border-gray-300 hover:bg-gray-100 transition
 ${!paymentReportState.hasNext
         ? "opacity-50 cursor-not-allowed"
         : ""}"
-
 ${!paymentReportState.hasNext
         ? "disabled"
         : ""}>
@@ -234,25 +273,18 @@ ${!paymentReportState.hasNext
 
     document
         .getElementById("previousPaymentReport")
-        ?.addEventListener(
-            "click",
-            previousReportPage
-        );
+        ?.addEventListener("click", previousReportPage);
 
     document
         .getElementById("nextPaymentReport")
-        ?.addEventListener(
-            "click",
-            nextReportPage
-        );
+        ?.addEventListener("click", nextReportPage);
 
 }
 
 async function nextReportPage() {
-
     if (!paymentReportState.hasNext)
         return;
-
+    paymentReportState.currentPage++;
     paymentReportState.previousCursors.push({
 
         cursorDate:
@@ -286,7 +318,7 @@ async function previousReportPage() {
         paymentReportState.previousCursors.length === 0
     )
         return;
-
+    paymentReportState.currentPage--;
     const previous =
         paymentReportState.previousCursors.pop();
 
@@ -342,31 +374,7 @@ document
 
     });
 
-document
-    .getElementById("paymentReportFromDate")
-    ?.addEventListener("change", e => {
 
-        paymentReportState.fromDate =
-            e.target.value;
-
-        resetReportCursor();
-
-        loadPaymentReport();
-
-    });
-
-document
-    .getElementById("paymentReportToDate")
-    ?.addEventListener("change", e => {
-
-        paymentReportState.toDate =
-            e.target.value;
-
-        resetReportCursor();
-
-        loadPaymentReport();
-
-    });
 
 document
     .getElementById("paymentReportSort")
@@ -485,9 +493,9 @@ ${buildReportInfoItem(
     )}
 
 ${buildReportInfoItem(
-        "📅",
-        "تاریخ ثبت",
-        formatReportDate(payment.creation_date)
+        "📝",
+        "توضیحات",
+        payment.description || "-"
     )}
 
 ${buildReportInfoItem(
@@ -618,32 +626,6 @@ class="rounded-full bg-red-100 text-red-700 px-4 py-2 font-bold">
 
 `;
 
-        case "cancelled":
-
-            return `
-
-<span
-class="rounded-full bg-gray-200 text-gray-700 px-4 py-2 font-bold">
-
-⚫ لغو شده
-
-</span>
-
-`;
-
-        case "expired":
-
-            return `
-
-<span
-class="rounded-full bg-orange-100 text-orange-700 px-4 py-2 font-bold">
-
-🟠 منقضی شده
-
-</span>
-
-`;
-
         default:
 
             return "";
@@ -657,7 +639,48 @@ function formatReportDate(dateString) {
     if (!dateString)
         return "-";
 
-    return new Date(dateString)
-        .toLocaleString("fa-IR");
+    return new Date(dateString).toLocaleString(
+        "fa-IR",
+        {
+            timeZone: "Asia/Tehran",
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit"
+        }
+    );
 
 }
+function stylePicker(id) {
+
+    const picker = document.getElementById(id);
+
+    const style = document.createElement("style");
+
+    style.textContent = `
+        .picker-container{
+            width:100%;
+            height:100%;
+        }
+
+        #date-input{
+            width:100%;
+            height:100%;
+            padding:0;
+            margin:0;
+            border:none;
+            outline:none;
+            box-sizing:border-box;
+            font:inherit;
+            background:transparent;
+        }
+    `;
+
+    picker.shadowRoot.appendChild(style);
+
+}
+
+stylePicker("paymentReportFromDate");
+stylePicker("paymentReportToDate");

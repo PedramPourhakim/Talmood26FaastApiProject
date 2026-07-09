@@ -23,6 +23,8 @@
     "choices.js": "^11.2.3",
     "embla-carousel": "^8.6.0",
     "embla-carousel-autoplay": "^8.6.0",
+    "jalaali-js": "^2.0.0",
+    "persian-datepicker-element": "^1.1.18",
     "slim-select": "^3.4.3",
     "sweetalert2": "^11.26.25",
     "swiper": "^12.2.0"

@@ -83,6 +83,7 @@ UPLOAD_DIR = "static/parasha_images"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
+app.mount("/data", StaticFiles(directory="static/data"), name="data")
 
 admin = Admin(app,engine,
     authentication_backend=AdminAuth(

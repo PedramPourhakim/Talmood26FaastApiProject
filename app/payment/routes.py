@@ -11,7 +11,8 @@ from zarinpal import ZarinPal
 from core.config import zarinpal_config,settings
 from sqlalchemy import and_, or_, desc, asc
 from person.models import PersonModel
-
+from datetime import  date,time
+from sqlalchemy import cast, Date
 
 router = APIRouter(tags=["payment"], prefix="/payments")
 
@@ -103,8 +104,8 @@ async def payment_report(
 
     status: PaymentStatusEnum | None = None,
 
-    from_date: datetime | None = None,
-    to_date: datetime | None = None,
+    from_date: date | None = None,
+    to_date: date | None = None,
 
     search: str | None = None,
 
@@ -141,12 +142,12 @@ async def payment_report(
     # بازه زمانی
     if from_date:
         query = query.filter(
-            PaymentModel.creation_date >= from_date
+            cast(PaymentModel.creation_date, Date) >= from_date
         )
 
     if to_date:
         query = query.filter(
-            PaymentModel.creation_date <= to_date
+            cast(PaymentModel.creation_date, Date) <= to_date
         )
 
     # جستجو
@@ -230,6 +231,7 @@ async def payment_report(
             "fee": payment.fee,
             "creation_date": payment.creation_date,
             "paid_at": payment.paid_at,
+            "description":payment.description,
 
             "payment_account": {
                 "id": payment.payment_account.id,

@@ -74,7 +74,7 @@ volumes:
   smtp4dev-data:
   postgres-data:
 # docker-compose up --build -d
-# docker exec -it backend_talmood26 bash (For running commands in docker terminal)
+# docker exec -it backend-talmood26 bash (For running commands in docker terminal)
 # docker-compose exec backend_talmood26 alembic revision --autogenerate -m "add person table"
 # docker-compose exec backend_talmood26 alembic upgrade head
 # docker-compose up -d db_talmood26 redis-talmood26
