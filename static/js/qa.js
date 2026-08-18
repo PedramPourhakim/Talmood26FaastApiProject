@@ -53,7 +53,7 @@ export async function loadQAs(page = currentPage) {
             return;
         }
 
-         const result = await response.json();
+        const result = await response.json();
 
         const qas = result.items;
         const total = result.total;
@@ -107,7 +107,7 @@ export async function loadQAs(page = currentPage) {
 
         qas.forEach(q => {
 
-             const otherSideName =
+            const otherSideName =
                 currentUser?.is_rabbie
                     ? `${q.talmid.name} ${q.talmid.family_name}`
                     : `${q.rabbie.name} ${q.rabbie.family_name}`;
@@ -122,11 +122,10 @@ export async function loadQAs(page = currentPage) {
 
             <div class="text-sm text-gray-400">
 
-                ${
-                currentUser.is_rabbie
+                ${currentUser.is_rabbie
                     ? "تلمید"
                     : "ربی"
-            }
+                }
 
             </div>
 
@@ -138,8 +137,7 @@ export async function loadQAs(page = currentPage) {
 
         </div>
 
-        ${
-                q.is_answered
+        ${q.is_answered
                     ?
                     `
                 <span class="bg-green-100 text-green-700 px-4 py-2 rounded-full">
@@ -156,7 +154,7 @@ export async function loadQAs(page = currentPage) {
 
                 </span>
                 `
-            }
+                }
 
     </div>
 
@@ -172,12 +170,15 @@ export async function loadQAs(page = currentPage) {
             </div>
 
             <div
-                class="question-bubble preview-text cursor-pointer"
-                data-text="${q.question}">
+    class="question-bubble preview-text cursor-pointer"
+    data-id="${q.id}"
+    data-type="question"
+    data-question="${q.question}"
+    data-answer="${q.answer ?? ""}">
 
-                ${q.question}
+    ${q.question}
 
-            </div>
+</div>
 
         </div>
 
@@ -190,18 +191,21 @@ export async function loadQAs(page = currentPage) {
 
             </div>
 
-            <div
-                class="
-                answer-bubble
-                preview-text
-                cursor-pointer
-                ${!q.answer ? "empty-answer" : ""}
-                "
-                data-text="${q.answer ?? "-"}">
+      <div
+    class="
+        answer-bubble
+        preview-text
+        cursor-pointer
+        ${!q.answer ? "empty-answer" : ""}
+    "
+    data-id="${q.id}"
+    data-type="answer"
+    data-question="${q.question}"
+    data-answer="${q.answer ?? ""}">
 
-                ${q.answer ?? "هنوز پاسخی ثبت نشده است"}
+    ${q.answer ?? "هنوز پاسخی ثبت نشده است"}
 
-            </div>
+</div>
 
         </div>
 
@@ -264,118 +268,99 @@ export async function loadQAs(page = currentPage) {
 
 function wireEvents() {
 
-    document.querySelectorAll(".edit-btn")
-        .forEach(btn => {
+    document.querySelectorAll(".edit-btn").forEach(btn => {
 
-            btn.onclick = () => {
+        btn.onclick = () => {
 
-                editingQaId = btn.dataset.id;
-                const title = document.getElementById("edit-modal-title");
-                const textarea = document.getElementById("edit-question");
-                const saveBtn = document.getElementById("save-edit-btn");
-                if (currentUser != null && currentUser.is_rabbie) {
+            editingQaId = btn.dataset.id;
 
-                    title.innerText = "ویرایش پاسخ";
+            openEditModal(
+                btn.dataset.question,
+                btn.dataset.answer
+            );
 
-                    textarea.placeholder =
-                        "پاسخ خود را وارد کنید...";
+        };
 
-                    textarea.value = btn.dataset.answer ?? "";
+    });
 
-                    saveBtn.innerText = "ذخیره پاسخ";
-
-                } else {
-
-                    title.innerText = "ویرایش سوال";
-
-                    textarea.placeholder =
-                        "سوال خود را وارد کنید...";
-
-                    textarea.value = btn.dataset.question;
-
-                    saveBtn.innerText = "ذخیره سوال";
-
-                }
-
-                document
-                    .getElementById("edit-qa-modal")
-                    .classList.remove("hidden");
-
-            };
-
-        });
-
-    document.querySelectorAll(".delete-btn")
-        .forEach(btn => {
-
-            btn.onclick = async () => {
-
-                const result = await Swal.fire({
-                    title: "حذف سوال",
-                    text: "آیا از حذف این سوال مطمئن هستید؟",
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonText: "بله، حذف شود",
-                    cancelButtonText: "انصراف",
-                    reverseButtons: true,
-                    customClass: {
-                        confirmButton: "bg-red-700 text-white px-4 py-2 rounded mx-2 cursor-pointer",
-                        cancelButton: "bg-gray-500 text-white px-4 py-2 rounded mx-2 cursor-pointer"
-                    },
-                    buttonsStyling: false
-                });
-
-                if (!result.isConfirmed)
-                    return;
-
-                const response = await fetch(`/qa/${btn.dataset.id}`, {
-                    method: "DELETE",
-                    credentials: "include"
-                });
-
-                if (response.ok) {
-
-                    await Swal.fire({
-                        title: "حذف شد",
-                        text: "سوال با موفقیت حذف شد.",
-                        icon: "success",
-                        timer: 1500,
-                        showConfirmButton: false
-                    });
-
-                    await loadQAs();
-
-                } else {
-
-                    await Swal.fire({
-                        title: "خطا",
-                        text: "حذف سوال با مشکل مواجه شد.",
-                        icon: "error"
-                    });
-
-                }
-
-            };
-
-        });
 }
 
 function wirePreviewEvents() {
 
-    document.querySelectorAll(".preview-text")
-        .forEach(item => {
+    document.querySelectorAll(".preview-text").forEach(item => {
 
-            item.onclick = () => {
+        item.onclick = () => {
 
-                document.getElementById("full-text").innerText =
-                    item.dataset.text;
+            const type = item.dataset.type;
+            const question = item.dataset.question;
+            const answer = item.dataset.answer;
 
-                document.getElementById("text-modal")
-                    .classList.remove("hidden");
+            editingQaId = item.dataset.id;
 
-            };
+            if (currentUser?.is_rabbie) {
 
-        });
+                if (type === "answer") {
+
+                    openEditModal(question, answer);
+
+                } else {
+
+                    document.getElementById("full-text").innerText =
+                        question;
+
+                    document.getElementById("text-modal")
+                        .classList.remove("hidden");
+                }
+
+            } else {
+
+                if (type === "question") {
+
+                    openEditModal(question, answer);
+
+                } else {
+
+                    document.getElementById("full-text").innerText =
+                        answer;
+
+                    document.getElementById("text-modal")
+                        .classList.remove("hidden");
+                }
+            }
+        };
+    });
+}
+function openEditModal(question, answer) {
+
+    const title = document.getElementById("edit-modal-title");
+    const textarea = document.getElementById("edit-question");
+    const saveBtn = document.getElementById("save-edit-btn");
+
+    if (currentUser !== null && currentUser.is_rabbie) {
+
+        title.innerText = "ویرایش پاسخ";
+
+        textarea.placeholder = "پاسخ خود را وارد کنید...";
+
+        textarea.value = answer ?? "";
+
+        saveBtn.innerText = "ذخیره پاسخ";
+
+    } else {
+
+        title.innerText = "ویرایش سوال";
+
+        textarea.placeholder = "سوال خود را وارد کنید...";
+
+        textarea.value = question ?? "";
+
+        saveBtn.innerText = "ذخیره سوال";
+
+    }
+
+    document
+        .getElementById("edit-qa-modal")
+        .classList.remove("hidden");
 
 }
 
@@ -481,10 +466,10 @@ document.addEventListener("keydown", (e) => {
 document.getElementById("close-text-modal")
     .onclick = () => {
 
-    document.getElementById("text-modal")
-        .classList.add("hidden");
+        document.getElementById("text-modal")
+            .classList.add("hidden");
 
-};
+    };
 
 const textModal = document.getElementById("text-modal");
 

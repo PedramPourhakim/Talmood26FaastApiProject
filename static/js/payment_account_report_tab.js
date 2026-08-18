@@ -1,7 +1,4 @@
-
-
-import * as picker from
-"persian-datepicker-element/dist/persian-datepicker-element.min.esm.js";
+import * as picker from "persian-datepicker-element/dist/persian-datepicker-element.min.esm.js";
 
 window.__picker = picker;
 
@@ -12,30 +9,35 @@ const fromPicker =
 const toPicker =
     document.getElementById("paymentReportToDate");
 
-fromPicker.addEventListener("change", (e) => {
+if (fromPicker != null && toPicker != null) {
+    stylePicker("paymentReportFromDate");
+    stylePicker("paymentReportToDate");
+    fromPicker.addEventListener("change", (e) => {
 
-    const g = e.detail.gregorian;
+        const g = e.detail.gregorian;
 
-    paymentReportState.fromDate =
-        `${g[0]}-${String(g[1]).padStart(2,"0")}-${String(g[2]).padStart(2,"0")}`;
+        paymentReportState.fromDate =
+            `${g[0]}-${String(g[1]).padStart(2, "0")}-${String(g[2]).padStart(2, "0")}`;
 
-    resetReportCursor();
+        resetReportCursor();
 
-    loadPaymentReport();
+        loadPaymentReport();
 
-});
-toPicker.addEventListener("change", (e) => {
+    });
+    toPicker.addEventListener("change", (e) => {
 
-    const g = e.detail.gregorian;
+        const g = e.detail.gregorian;
 
-    paymentReportState.toDate =
-        `${g[0]}-${String(g[1]).padStart(2,"0")}-${String(g[2]).padStart(2,"0")}`;
+        paymentReportState.toDate =
+            `${g[0]}-${String(g[1]).padStart(2, "0")}-${String(g[2]).padStart(2, "0")}`;
 
-    resetReportCursor();
+        resetReportCursor();
 
-    loadPaymentReport();
+        loadPaymentReport();
 
-});
+    });
+}
+
 const paymentReportContainer =
     document.getElementById("paymentReportContainer");
 
@@ -375,7 +377,6 @@ document
     });
 
 
-
 document
     .getElementById("paymentReportSort")
     ?.addEventListener("change", e => {
@@ -653,6 +654,7 @@ function formatReportDate(dateString) {
     );
 
 }
+
 function stylePicker(id) {
 
     const picker = document.getElementById(id);
@@ -682,5 +684,3 @@ function stylePicker(id) {
 
 }
 
-stylePicker("paymentReportFromDate");
-stylePicker("paymentReportToDate");

@@ -161,8 +161,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // بررسی ساده برای خالی نبودن فیلدها (Client-side validation)
         if (!name || !family || !email || !phone) {
-            alert("لطفاً تمامی فیلدها را پر کنید.");
-            return;
+             await Swal.fire(
+                    "خطا",
+                    "تمامی مقادیر فرم باید پرشوند",
+                    "error"
+                );
+                return;
         }
 
         try {
@@ -199,7 +203,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             // اگر موفقیت‌آمیز بود
-            alert("ثبت نام با موفقیت انجام شد ✅");
+            await Swal.fire("ثبت نام موفق","ثبت نام با موفقیت انجام شد ✅","success");
 
             // ۱. مخفی کردن فرم ثبت نام
             document.getElementById("step-register").classList.add("hidden");
@@ -210,7 +214,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         } catch (error) {
             console.error("Registration Error:", error);
-            alert(error.message);
+            await Swal.fire("خطا",error.message,"error");
         } finally {
             // فعال کردن مجدد دکمه
             const registerBtn = document.getElementById("register-btn");
@@ -256,7 +260,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         } catch (err) {
             console.log("error response : ", err);
-            alert("ارسال ایمیل با خطا مواجه شد");
+            await Swal.fire("خطا","ارسال ایمیل با خطا مواجه شد","error");
 
         }
 
