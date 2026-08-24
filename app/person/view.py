@@ -1,5 +1,5 @@
 from sqladmin import ModelView
-from person.models import PersonModel
+from app.person.models import PersonModel
 from markupsafe import Markup
 from wtforms import FileField
 from wtforms.validators import Optional,InputRequired

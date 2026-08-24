@@ -1,16 +1,16 @@
-from payment.schemas import *
+from app.payment.schemas import *
 from fastapi import APIRouter, Depends, status,Query,Path
 from fastapi.responses import JSONResponse
 from fastapi.exceptions import HTTPException
 from fastapi_cache.decorator import cache
 from sqlalchemy.orm import Session, joinedload
-from auth.jwt_auth import get_authenticated_user
-from core.database import get_db
-from payment.models import PaymentModel,PaymentStatusEnum
+from app.auth.jwt_auth import get_authenticated_user
+from app.core.database import get_db
+from app.payment.models import PaymentModel,PaymentStatusEnum
 from zarinpal import ZarinPal
-from core.config import zarinpal_config,settings
+from app.core.config import zarinpal_config,settings
 from sqlalchemy import and_, or_, desc, asc
-from person.models import PersonModel
+from app.person.models import PersonModel
 from datetime import  date,time
 from sqlalchemy import cast, Date
 

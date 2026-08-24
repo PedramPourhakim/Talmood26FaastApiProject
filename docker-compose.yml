@@ -1,83 +1,74 @@
 services:
+
   db-talmood26:
     image: postgres:17
     container_name: db-talmood26
     restart: always
+
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: postgres
+
     volumes:
       - postgres-data:/var/lib/postgresql/data
+
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "postgres", "-d", "postgres"]
       interval: 10s
       timeout: 5s
       retries: 5
       start_period: 30s
+
     ports:
       - "5432:5432"
+
 
   redis-talmood26:
     image: redis:7-alpine
     container_name: redis-talmood26
     restart: always
+
     ports:
       - "6379:6379"
+
     healthcheck:
-      test: ["CMD","redis-cli","ping"]
+      test: ["CMD", "redis-cli", "ping"]
       interval: 10s
+      timeout: 10s
       retries: 5
       start_period: 30s
-      timeout: 10s
-    # اگر بخوای persistence داشته باشی، می‌تونی این رو هم اضافه کنی:
-    volumes:
-      - ./redis-data:/data
-    command: ["redis-server", "--save", "20", "1", "--loglevel", "warning"]
 
-  smtp4dev:
-      image: rnwood/smtp4dev:v3
-      restart: always
-      ports:
-        - '5000:80'
-        - '25:25'
-        - '143:143'
-        - '110:110'
-      volumes:
-        - smtp4dev-data:/smtp4dev
 
   backend-talmood26:
     build:
       context: .
       dockerfile: Dockerfile
+
     container_name: backend-talmood26
     restart: always
+
     depends_on:
       db-talmood26:
-          condition: service_healthy
+        condition: service_healthy
+
       redis-talmood26:
-          condition: service_healthy
+        condition: service_healthy
+
     environment:
-      SQLALCHEMY_DATABASE_URL: postgresql://postgres:postgres@db-talmood26:5432/postgres
-      JWT_SECRET_KEY: Testkjfejdfqwejd;qwekd;qwkd;qwekd;qwkd;qwkdjfjwefj
+      SQLALCHEMY_DATABASE_URL: postgresql://root:kiPeDubirwYmYahDrynrsl7u@siah-kaman.liara.cloud:34923/postgres
+      # SQLALCHEMY_DATABASE_URL: postgresql://postgres:postgres@db-talmood26:5432/postgres
+
+      JWT_SECRET_KEY: "Testkjfejdfqwejd;qwekd;qwkd;qwekd;qwkd;qwkdjfjwefj"
+
       REDIS_URL: redis://redis-talmood26:6379
+
       UPLOAD_DIR: /usr/src/core/static/parasha_images
+
       UPLOAD_URL_PREFIX: /static/parasha_images
+
     ports:
       - "8000:8000"
-    command: uvicorn main:app --host 0.0.0.0 --port 8000  --log-level debug
-    volumes:
-      - ./app:/usr/src/core
-      - ./static:/usr/src/core/static
 
 volumes:
-  smtp4dev-data:
   postgres-data:
-# docker-compose up --build -d
-# docker exec -it backend-talmood26 bash (For running commands in docker terminal)
-# docker-compose exec backend_talmood26 alembic revision --autogenerate -m "add person table"
-# docker-compose exec backend_talmood26 alembic upgrade head
-# docker-compose up -d db_talmood26 redis-talmood26
-# docker exec -it db_talmood26 psql -U postgres -d postgres -c "TRUNCATE TABLE person RESTART IDENTITY CASCADE;"
-#docker exec db-talmood26 pg_dump -U postgres postgres > backup.sql
-#docker exec db-talmood26 pg_dump -U postgres postgres > backup.sql

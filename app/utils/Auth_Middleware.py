@@ -1,6 +1,6 @@
 from starlette.middleware.base import BaseHTTPMiddleware
 from jwt.exceptions import ExpiredSignatureError
-from auth.jwt_auth import generate_access_token, decode_token
+from app.auth.jwt_auth import generate_access_token, decode_token
 from sqladmin.authentication import AuthenticationBackend
 from starlette.requests import Request
 from fastapi.responses import JSONResponse

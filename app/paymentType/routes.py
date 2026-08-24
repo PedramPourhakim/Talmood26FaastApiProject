@@ -2,10 +2,10 @@ from typing import List
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi_cache.decorator import cache
 from sqlalchemy.orm import Session,joinedload
-from auth.jwt_auth import get_authenticated_user
-from core.database import get_db
-from paymentType.models import PaymentTypeModel
-from paymentType.schemas import PaymentTypeResponseSchema
+from app.auth.jwt_auth import get_authenticated_user
+from app.core.database import get_db
+from app.paymentType.models import PaymentTypeModel
+from app.paymentType.schemas import PaymentTypeResponseSchema
 
 router = APIRouter(tags=["payment_type"], prefix="/payment_type")
 

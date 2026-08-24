@@ -1,6 +1,6 @@
 from sqladmin import ModelView
-from qa.models import QAModel
-from person.models import PersonModel
+from app.qa.models import QAModel
+from app.person.models import PersonModel
 from wtforms.validators import DataRequired
 from wtforms import SelectField
 

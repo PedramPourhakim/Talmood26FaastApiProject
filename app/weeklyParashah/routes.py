@@ -14,10 +14,10 @@ from fastapi import (
 from fastapi_cache.decorator import cache
 from sqlalchemy.orm import Session
 
-from core.database import get_db
-from weeklyParashah.models import ParashaModel
-from weeklyParashah.schemas import BaseParashahSchema, ResponseParashahSchema
-from utils.FileManager import delete_old_image, save_file
+from app.core.database import get_db
+from app.weeklyParashah.models import ParashaModel
+from app.weeklyParashah.schemas import BaseParashahSchema, ResponseParashahSchema
+from app.utils.FileManager import delete_old_image, save_file
 
 router = APIRouter(tags=["Parasha"], prefix="/parasha")
 

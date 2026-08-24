@@ -1,5 +1,5 @@
 from sqladmin import ModelView
-from payment.models import PaymentModel
+from app.payment.models import PaymentModel
 
 class PaymentView(ModelView,model=PaymentModel):
     name = "مدیریت تراکنش های بانکی"

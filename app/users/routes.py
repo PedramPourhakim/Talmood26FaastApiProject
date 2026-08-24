@@ -5,22 +5,21 @@ from fastapi.responses import JSONResponse
 from sqlalchemy import or_
 from fastapi_cache.decorator import cache
 from sqlalchemy.orm import joinedload
-import auth.jwt_auth
-from core.config import settings
-from users.schemas import *
-from users.models import UserModel
+from app.core.config import settings
+from app.users.schemas import *
+from app.users.models import UserModel
 from sqlalchemy.orm import Session
-from core.database import get_db
-from auth.jwt_auth import (
+from app.core.database import get_db
+from app.auth.jwt_auth import (
 generate_access_token,
 generate_refresh_token,
 decode_refresh_token
 )
 import random
 from typing import List
-from utils.email_util import send_email
-from core.redis import redis
-from paymentAccount.models import PaymentAccountModel
+from app.utils.email_util import send_email
+from app.core.redis import redis
+from app.paymentAccount.models import PaymentAccountModel
 router = APIRouter(tags=["users"],prefix="/users")
 
 

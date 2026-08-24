@@ -1,5 +1,5 @@
 from sqladmin import ModelView
-from paymentAccount.models import PaymentAccountModel
+from app.paymentAccount.models import PaymentAccountModel
 
 class PaymentAccountView(ModelView,model=PaymentAccountModel):
     name = "مشخصات حساب مربوط به پرداخت"

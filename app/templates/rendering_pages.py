@@ -5,22 +5,22 @@ from fastapi import APIRouter,Request,Depends,HTTPException,status,Response,Quer
 from fastapi.responses import JSONResponse,RedirectResponse
 from urllib.parse import urlencode
 from sqlalchemy.orm import Session
-from core.database import get_db
-from weeklyParashah.models import ParashaModel
-from person.schemas import CreatePersonSchema
-from person.models import PersonModel
-from users.models import UserModel
-from payment.models import PaymentModel,PaymentStatusEnum
+from app.core.database import get_db
+from app.weeklyParashah.models import ParashaModel
+from app.person.schemas import CreatePersonSchema
+from app.person.models import PersonModel
+from app.users.models import UserModel
+from app.payment.models import PaymentModel,PaymentStatusEnum
 from sqlalchemy import or_
 from pydantic import BaseModel,Field,EmailStr
 from redis import asyncio as aioredis
 from fastapi_cache.backends.redis import RedisBackend
 from fastapi_cache import FastAPICache
-from core.config import settings,zarinpal_config
+from app.core.config import settings,zarinpal_config
 import logging
 from zarinpal import ZarinPal
 
-templates = Jinja2Templates(directory="templates")
+templates = Jinja2Templates(directory="./app/templates")
 router = APIRouter(tags=["index_page"])
 logger = logging.getLogger("payment")
 

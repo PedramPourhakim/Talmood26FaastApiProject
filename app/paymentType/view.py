@@ -1,5 +1,5 @@
 from sqladmin import ModelView
-from paymentType.models import PaymentTypeModel
+from app.paymentType.models import PaymentTypeModel
 
 class PaymentTypeView(ModelView,model=PaymentTypeModel):
     name = "نوع پرداخت"

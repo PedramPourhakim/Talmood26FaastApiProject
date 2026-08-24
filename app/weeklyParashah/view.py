@@ -1,12 +1,12 @@
 from sqladmin import ModelView
-from weeklyParashah.models import ParashaModel
+from app.weeklyParashah.models import ParashaModel
 from markupsafe import Markup
 from redis import asyncio as aioredis
-from core.config import settings
+from app.core.config import settings
 from wtforms import FileField, TextAreaField
 from wtforms.validators import Optional, DataRequired,InputRequired
 import json
-from core.database import SessionLocal
+from app.core.database import SessionLocal
 
 redis = aioredis.from_url(settings.REDIS_URL)
 

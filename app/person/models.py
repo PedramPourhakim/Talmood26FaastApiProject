@@ -1,4 +1,4 @@
-from core.database import Base
+from app.core.database import Base
 from sqlalchemy import Column, String, DateTime, Boolean
 from sqlalchemy_file import ImageField
 from sqlalchemy.sql import func

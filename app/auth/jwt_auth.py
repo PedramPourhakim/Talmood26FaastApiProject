@@ -3,7 +3,7 @@ import jwt
 from fastapi import HTTPException, status, Request, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from jwt.exceptions import DecodeError, ExpiredSignatureError, InvalidSignatureError
-from core.config import settings
+from app.core.config import settings
 security = HTTPBearer(scheme_name="Token")
 
 

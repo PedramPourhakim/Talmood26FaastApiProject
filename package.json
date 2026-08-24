@@ -2,12 +2,13 @@
   "name": "talmood_26",
   "version": "1.0.0",
   "main": "index.js",
-  "scripts": {
-    "tailwind": "tailwindcss -i ./static/css/input.css -o ./static/css/output.css --watch",
-    "vite": "vite",
-    "build": "vite build",
-    "dev": "concurrently \"npm run tailwind\" \"npm run vite\""
-  },
+ "scripts": {
+  "tailwind": "npx @tailwindcss/cli -i ./static/css/input.css -o ./static/css/output.css --watch",
+  "tailwind:build": "npx @tailwindcss/cli -i ./static/css/input.css -o ./static/css/output.css",
+  "vite": "vite",
+  "build": "vite build",
+  "dev": "concurrently \"npm run tailwind\" \"npm run vite\""
+},
   "keywords": [],
   "author": "",
   "license": "ISC",

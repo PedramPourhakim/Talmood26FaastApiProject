@@ -1,5 +1,5 @@
 from sqladmin import ModelView
-from users.models import UserModel
+from app.users.models import UserModel
 
 class UserView(ModelView,model=UserModel):
     name = "حساب کاربری"

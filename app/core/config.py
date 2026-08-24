@@ -6,7 +6,7 @@ from zarinpal_utils.Config import Config
 
 
 class Settings(BaseSettings):
-    SQLALCHEMY_DATABASE_URL: str = "sqlite:///:memory:"
+    SQLALCHEMY_DATABASE_URL: str
     JWT_SECRET_KEY: str = secrets.token_urlsafe(64)
     JWT_ALGORITHM: str
     REDIS_URL: str
@@ -28,7 +28,7 @@ class Settings(BaseSettings):
     ZARIN_PAL_ACCESS_TOKEN : str
     ZARIN_PAL_CALLBACK_URL : str
 
-    model_config = SettingsConfigDict(env_file=".env")
+    model_config = SettingsConfigDict(env_file="app/.env",env_file_encoding="utf-8")
 
 
 settings = Settings()

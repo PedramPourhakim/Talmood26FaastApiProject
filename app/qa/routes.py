@@ -3,10 +3,10 @@ from fastapi.responses import JSONResponse
 from fastapi_cache.decorator import cache
 from sqlalchemy.orm import Session, joinedload
 
-from auth.jwt_auth import get_authenticated_user
-from core.database import get_db
-from qa.models import QAModel
-from qa.schemas import *
+from app.auth.jwt_auth import get_authenticated_user
+from app.core.database import get_db
+from app.qa.models import QAModel
+from app.qa.schemas import *
 
 router = APIRouter(tags=["qa"], prefix="/qa")
 

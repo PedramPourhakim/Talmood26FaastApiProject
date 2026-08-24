@@ -1,11 +1,11 @@
 from fastapi import APIRouter,status,Query,Depends,Path
 from fastapi_cache.decorator import cache
-from person.schemas import *
-from person.models import *
+from app.person.schemas import *
+from app.person.models import *
 from typing import List
 from fastapi.responses import JSONResponse
 from fastapi.exceptions import HTTPException
-from core.database import get_db
+from app.core.database import get_db
 from sqlalchemy.orm import Session
 import logging
 
@@ -96,7 +96,11 @@ async def get_rabbies(db: Session = Depends(get_db)):
                 "id": p.id,
                 "name": p.name,
                 "family_name": p.family_name,
-                "image": p.image["url"] if p.image else None,
+                "image": (
+                    f"/static/person_images/{p.image['file_id']}"
+                    if p.image
+                    else None
+                ),
                 "is_admin": p.is_admin,
                 "is_rabbie": p.is_rabbie,
                 "creation_date": p.creation_date,

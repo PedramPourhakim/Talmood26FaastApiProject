@@ -1,5 +1,5 @@
 from pydantic import BaseModel,Field
-from paymentAccount.schemas import PaymentAccountResponseSchema
+from app.paymentAccount.schemas import PaymentAccountResponseSchema
 from typing import List
 
 class PaymentTypeResponseSchema(BaseModel):

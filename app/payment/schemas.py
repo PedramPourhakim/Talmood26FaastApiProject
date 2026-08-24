@@ -1,9 +1,8 @@
-import uuid
 from datetime import datetime
 from pydantic import BaseModel,Field,field_validator
-from payment.models import PaymentStatusEnum
+from app.payment.models import PaymentStatusEnum
 from typing import List
-from paymentAccount.schemas import PaymentAccountResponseSchema
+from app.paymentAccount.schemas import PaymentAccountResponseSchema
 
 class PaymentSchema(BaseModel):
     person_id: str = Field(..., description="Unique identifier of the Person Who wants to pay")

@@ -8,7 +8,7 @@ from sqlalchemy import create_engine, text
 from sqlalchemy.exc import OperationalError
 from sqlalchemy.orm import declarative_base, sessionmaker
 
-from core.config import settings
+from app.core.config import settings
 
 
 MAX_RETRIES = 20
